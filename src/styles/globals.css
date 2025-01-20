@@ -56,6 +56,17 @@
     --chart-5: 340 75% 55%
   }
 }
+
+#gradient-canvas {
+  width:100%;
+  height:100%;
+  --gradient-color-1: #34cceb; 
+  --gradient-color-2: #000000; 
+  --gradient-color-3: #000000;  
+  --gradient-color-4: #000000;
+  z-index:0;
+}
+
 @layer base {
   * {
     @apply border-border font-sans;
