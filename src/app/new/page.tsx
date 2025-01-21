@@ -71,7 +71,7 @@ export default function Page() {
               <div className="relative z-10 flex flex-col justify-between h-full">
                 <ArrowRight className="w-8 h-8" />
                 <div>
-                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold font-tektur">Register</h2>
+                  <p className="text-xl md:text-2xl lg:text-3xl font-bold font-tektur">Register</p>
                   <p className="text-2xs md:text-xs lg:text-sm font-tektur">LIMITED SEATS</p>
                 </div>
               </div>
@@ -99,7 +99,7 @@ export default function Page() {
               <div className="flex gap-12">
                 <p className="text-sm md:text-base lg:text-md font-tektur font-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vehicula</p>
                 <div className="flex justify-end">
-                  <Button asChild className="bg-[#DCFF03] text-black hover:bg-[#DCFF03] font-tektur text-sm md:text-base lg:text-lg py-1 px-4 mt-2">
+                  <Button asChild className="bg-[#DCFF03] text-black hover:bg-black hover:text-[#DCFF03] transition-colors duration-200 font-tektur text-sm md:text-base lg:text-lg py-1 px-4 mt-2">
                     <a href={VOLUNTEER_FORM_URL} target="_blank" rel="noopener noreferrer">
                       Volunteer
                     </a>

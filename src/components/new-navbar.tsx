@@ -17,7 +17,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div className="hidden md:flex items-center space-x-8">
             {links.map((link) => (
-              <Link key={link.href} href={link.href} className="text-sm">
+              <Link key={link.href} href={link.href} className="text-sm hover:text-[#c8e029] transition-colors duration-200">
                 {link.label}
               </Link>
             ))}
