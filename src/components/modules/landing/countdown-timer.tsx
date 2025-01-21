@@ -30,8 +30,8 @@ export function CountdownTimer() {
     <div className="grid grid-cols-3 gap-12">
       {timeUnits.map(({ value, label }) => (
         <div key={label}>
-          <span className="text-5xl font-tektur font-bold">{formatTime(value)}</span>
-          <p className="text-xl font-tektur text-left">{label}</p>
+          <span className="text-4xl md:text-5xl font-tektur font-bold">{formatTime(value)}</span>
+          <p className="text-lg md:text-xl font-tektur text-left">{label}</p>
         </div>
       ))}
     </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useCallback, useMemo } from "react";
+import { useEffect, useCallback, useMemo, useState, Fragment } from "react";
 
 const CODE_SNIPPET = `async publicProcedure.query(() => {
   return posts;
@@ -9,7 +9,7 @@ const CODE_SNIPPET = `async publicProcedure.query(() => {
 export const generateMetadata = publicProcedure
   .input(z.object({
     prompt: z.string().min(4).max(280),
-    // Please fix this URL on the webpage: /merch-access
+    // Please fix: /merch-access
   }))
   .mutation(async ({ input }) => {
     const completion = await openai.chat.completions
@@ -21,7 +21,8 @@ export const generateMetadata = publicProcedure
       })`;
 
 export function CodeSnippet() {
-  const [displayedCode, setDisplayedCode] = React.useState("");
+  const isMobile = window.matchMedia("(max-width: 600px)").matches;
+  const [displayedCode, setDisplayedCode] = useState("");
   
   const codeString = useMemo(() => CODE_SNIPPET, []);
 
@@ -95,14 +96,18 @@ export function CodeSnippet() {
     return parts;
   }, []);
 
+  const lines = CODE_SNIPPET.split('\n').length;
+  const lineHeight = isMobile ? 1.1 : 1.3;
+  const height = `${lines * lineHeight}rem`;
+
   return (
-    <pre className="text-sm font-mono overflow-x-hidden text-white">
+    <pre className="text-xs md:text-sm font-mono overflow-x-hidden overflow-y-hidden text-white" style={{ height }}>
       <code>
         {displayedCode.split('\n').map((line, i) => (
-          <React.Fragment key={`line-${i}`}>
+          <Fragment key={`line-${i}`}>
             {highlightCode(line)}
             {'\n'}
-          </React.Fragment>
+          </Fragment>
         ))}
       </code>
     </pre>
