@@ -45,6 +45,7 @@ export default withUt({
           lilac: "hsl(var(--accent-lilac))",
           blue: "hsl(var(--accent-blue))",
           red: "hsl(var(--accent-red))",
+          orange: "hsl(var(--accent-orange))",
           foreground: "hsl(var(--accent-foreground))",
         },
         destructive: {

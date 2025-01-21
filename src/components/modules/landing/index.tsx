@@ -1,33 +1,29 @@
 import { ArrowRight } from "lucide-react";
 import { Card, CardContent } from "../../ui/card";
-import { CodeSnippet } from "./code-snippet";
-import { CountdownTimer } from "./countdown-timer";
-import CodeBlockBackground from "./code-block-backgrond";
 import { Button } from "../../ui/button";
+import { CodeSnippet } from "./code-snippet";
+import CodeBlockBackground from "./code-block-backgrond";
+import { CountdownTimer } from "./countdown-timer";
 
 const VOLUNTEER_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdd_aRixgoGqsnhsZ7O92HZ4hEn0NhhL3xSUVCJwWtPVyq3tg/viewform?usp=send_form";
 
-const RegisterCard = () => {
-  return (
-    <Card className="bg-[#e67553] text-white group relative cursor-pointer transition-transform duration-300 border-0 h-full">
-      <CardContent className="p-6 relative overflow-hidden h-full border-0">
-        <CodeBlockBackground />
-      <div className="relative z-10 flex flex-row md:flex-col justify-between items-center md:items-start h-full">
-        <div className="order-2 md:order-none">
-          <ArrowRight className="w-8 h-8" />
+const RegisterCard = () => (
+  <Card className="relative h-full col-span-1 cursor-pointer border-0 bg-accent-orange text-white transition-transform duration-300 group">
+    <CardContent className="relative h-full overflow-hidden border-0 p-6">
+      <CodeBlockBackground />
+      <div className="relative z-10 flex h-full flex-col justify-between">
+        <ArrowRight className="h-8 w-8" />
+        <div>
+          <p className="font-tektur text-xl font-bold md:text-2xl lg:text-3xl">Register</p>
+          <p className="font-tektur text-2xs md:text-xs lg:text-sm">NOT OPEN YET</p>
         </div>
-        <div className="order-1 md:order-none">
-          <p className="text-xl md:text-2xl lg:text-3xl font-bold font-tektur">Register</p>
-          <p className="text-2xs md:text-xs lg:text-sm font-tektur">NOT OPEN YET</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
+      </div>
+    </CardContent>
+  </Card>
+);
 
 const CodeCard = () => (
-  <Card className="bg-[#1a1a1a] border-none h-full">
+  <Card className="hidden h-full border-none bg-[#1a1a1a] lg:block lg:col-span-2">
     <CardContent className="p-4">
       <CodeSnippet />
     </CardContent>
@@ -35,12 +31,12 @@ const CodeCard = () => (
 );
 
 const CountdownCard = () => (
-  <Card className="bg-gradient-to-r from-[#DFA8F6] to-[#DCFF03] text-black border-0">
-    <CardContent className="p-6 flex flex-col lg:flex-row h-full">
-      <div className="flex mb-4 md:mb-0 lg:self-end lg:flex-grow">
-        <p className="text-lg md:text-xl lg:text-2xl font-bold font-tektur">Starting in:</p>
+  <Card className="border-0 bg-gradient-to-r from-accent-lilac to-accent-yellow text-black">
+    <CardContent className="flex p-6">
+      <div className="flex flex-grow self-end">
+        <p className="font-tektur text-lg font-bold md:text-xl lg:text-2xl">Starting in:</p>
       </div>
-      <div className="flex justify-center lg:justify-end items-end">
+      <div className="flex justify-end">
         <CountdownTimer />
       </div>
     </CardContent>
@@ -48,14 +44,14 @@ const CountdownCard = () => (
 );
 
 const VolunteerCard = () => (
-  <Card className="bg-[#DFA8F6] text-black border-0">
+  <Card className="border-0 bg-[#DFA8F6] text-black">
     <CardContent className="p-6">
       <div>
-        <h2 className="text-lg md:text-xl lg:text-2xl font-semibold mb-2 font-tektur">We Need More Hands!</h2>
-        <div className="flex flex-col lg:flex-row justify-between">
-          <p className="text-sm md:text-base lg:text-md font-tektur font-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vehicula</p>
+        <h2 className="mb-2 font-tektur text-lg font-semibold md:text-xl lg:text-2xl">We Need More Hands!</h2>
+        <div className="flex justify-between">
+          <p className="font-tektur text-sm font-light md:text-base lg:text-md">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vehicula</p>
           <div className="flex justify-end">
-            <Button asChild className="bg-[#DCFF03] text-black hover:bg-black hover:text-[#DCFF03] transition-colors duration-200 font-tektur text-sm md:text-base lg:text-lg lg:py-1 px-4 w-full lg:w-fit mt-5 py-3">
+            <Button asChild className="mt-2 bg-accent-yellow px-4 py-1 font-tektur text-sm text-black transition-colors duration-200 hover:bg-black hover:text-accent-yellow md:text-base lg:text-lg">
               <a href={VOLUNTEER_FORM_URL} target="_blank" rel="noopener noreferrer">
                 Volunteer
               </a>
@@ -68,21 +64,21 @@ const VolunteerCard = () => (
 );
 
 const WelcomeCard = () => (
-  <Card className="bg-white text-black relative h-full">
+  <Card className="relative h-full border-0 col-span-1 bg-white text-black lg:col-span-3">
     <div className="absolute inset-0 z-0">
       <img
         src="/logo_back.png"
         alt="Background Logo"
-        className="w-full h-full object-cover opacity-50"
+        className="h-full w-full object-cover opacity-50"
       />
     </div>
-    <CardContent className="p-6 space-y-4 relative z-10">
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold font-tektur">WELCOME TO HTB!</h2>
+    <CardContent className="relative z-10 space-y-4 p-6">
+      <h2 className="font-tektur text-3xl font-semibold md:text-4xl lg:text-5xl">WELCOME TO HTB!</h2>
       <p className="text-base md:text-lg lg:text-xl">
         This September, join 1,000+ hackers from around the world for a hackathon like no other. Discover a community of like-minded hackers, connect with world-class mentors, and build because you love to build. At Hack the North 11, you're in for a great time with engaging workshops, fun activities, and the chance to network with the most exciting companies in tech!
       </p>
       <div className="flex justify-end">
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white font-tektur mt-2 text-lg md:text-xl lg:text-2xl py-2 px-4 w-full md:w-fit">
+        <Button className="mt-2 bg-blue-600 px-4 py-2 font-tektur text-lg text-white hover:bg-blue-700 md:text-xl lg:text-2xl">
           Get Started
         </Button>
       </div>
