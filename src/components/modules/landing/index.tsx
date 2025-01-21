@@ -97,4 +97,3 @@ export const LandingCard = {
   VolunteerCard,
   WelcomeCard,
 } as const;
-
