@@ -8,7 +8,7 @@ import { CountdownTimer } from "./countdown-timer";
 const VOLUNTEER_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdd_aRixgoGqsnhsZ7O92HZ4hEn0NhhL3xSUVCJwWtPVyq3tg/viewform?usp=send_form";
 
 const RegisterCard = () => (
-  <Card className="relative h-full col-span-1 cursor-pointer border-0 bg-accent-orange text-white transition-transform duration-300 group">
+  <Card className="relative h-full cursor-pointer border-0 bg-accent-orange text-white transition-transform duration-300 group">
     <CardContent className="relative h-full overflow-hidden border-0 p-6">
       <CodeBlockBackground />
       <div className="relative z-10 flex h-full lg:flex-col justify-between items-center lg:items-start">
@@ -23,7 +23,7 @@ const RegisterCard = () => (
 );
 
 const CodeCard = () => (
-  <Card className="block h-full border-none bg-[#1a1a1a] lg:col-span-2">
+  <Card className="block h-full border-none bg-[#1a1a1a]">
     <CardContent className="p-4">
       <CodeSnippet />
     </CardContent>
@@ -64,7 +64,7 @@ const VolunteerCard = () => (
 );
 
 const WelcomeCard = () => (
-  <Card className="relative h-full border-0 col-span-1 bg-white text-black lg:col-span-3">
+  <Card className="relative h-full border-0 bg-white text-black">
     <div className="absolute inset-0 z-0">
       <img
         src="/logo_back.png"

@@ -28,22 +28,23 @@ export function CodeSnippet() {
 
   useEffect(() => {
     let currentIndex = 0;
-    let isActive = true;
+    let isTypingActive = true;
 
-    const intervalId = setInterval(() => {
-      if (!isActive) return;
+    const typingAnimation = setInterval(() => {
+      if (!isTypingActive) return;
       
       if (currentIndex <= codeString.length) {
-        setDisplayedCode(prev => codeString.slice(0, currentIndex));
+        setDisplayedCode(codeString.slice(0, currentIndex));
         currentIndex++;
-      } else {
-        clearInterval(intervalId);
+      }
+      else {
+        clearInterval(typingAnimation);
       }
     }, 50);
 
     return () => {
-      isActive = false;
-      clearInterval(intervalId);
+      isTypingActive = false;
+      clearInterval(typingAnimation);
     };
   }, [codeString]);
 
