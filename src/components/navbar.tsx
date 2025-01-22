@@ -26,18 +26,24 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
   ];
 
   const renderNavLinks = (mobile = false) => (
-    navLinks.map(({ href, label, external }) => (
-      <Link
+    navLinks.map(({ href, label, external }, index) => (
+      <motion.div
         key={href}
-        href={href}
-        className={mobile ? "text-white" : ""}
-        {...(external && {
-          target: "_blank",
-          rel: "noopener noreferrer"
-        })}
+        initial={mobile ? { opacity: 0, x: -20 } : {}}
+        animate={mobile ? { opacity: 1, x: 0 } : {}}
+        transition={{ delay: mobile ? index * 0.1 : 0 }}
       >
-        {label}
-      </Link>
+        <Link
+          href={href}
+          className={mobile ? "text-white" : ""}
+          {...(external && {
+            target: "_blank",
+            rel: "noopener noreferrer"
+          })}
+        >
+          {label}
+        </Link>
+      </motion.div>
     ))
   );
 
@@ -46,30 +52,41 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
 
     if (isSignedIn) {
       return (
-        <>
-          <Link 
-            href="/dashboard/application"
-            className={mobile ? "text-white" : ""}
-          >
-            My Application
-          </Link>
-          {isAdmin && (
+        <motion.div
+          initial={mobile ? { opacity: 0, x: -20 } : {}}
+          animate={mobile ? { opacity: 1, x: 0 } : {}}
+          transition={{ delay: mobile ? navLinks.length * 0.1 : 0 }}
+        >
+          <div className="flex justify-center items-center gap-4">
             <Link 
-              href="/dashboard/admin"
+              href="/dashboard/application"
               className={mobile ? "text-white" : ""}
             >
-              Admin Dashboard
+              My Application
             </Link>
-          )}
-          <div className={mobile ? "pt-2" : ""}>
-            <UserButton afterSignOutUrl="/" />
+            {isAdmin && (
+              <Link 
+                href="/dashboard/admin"
+                className={mobile ? "text-white" : ""}
+              >
+                Admin Dashboard
+              </Link>
+            )}
+            <div className={mobile ? "pt-2" : ""}>
+              <UserButton afterSignOutUrl="/" />
+            </div>
           </div>
-        </>
+        </motion.div>
       );
     }
 
     return (
-      <div className={mobile ? "flex flex-col gap-4" : "flex items-center gap-8"}>
+      <motion.div
+        initial={mobile ? { opacity: 0, x: -20 } : {}}
+        animate={mobile ? { opacity: 1, x: 0 } : {}}
+        transition={{ delay: mobile ? navLinks.length * 0.1 : 0 }}
+        className={mobile ? "flex flex-col gap-4" : "flex items-center gap-8"}
+      >
         <Button 
           asChild 
           className={`bg-accent-yellow hover:bg-accent-yellow/90 text-black ${
@@ -78,13 +95,27 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
         >
           <Link href="/signup">Register</Link>
         </Button>
-        <Link 
-          href="/signin"
-          className={mobile ? "text-center text-white" : ""}
-        >
-          Sign In
-        </Link>
-      </div>
+        {mobile ? (
+          <Button 
+            asChild 
+            className="w-full bg-black hover:bg-black/90 text-white"
+          >
+            <Link 
+              href="/signin"
+              className="text-center text-white"
+            >
+              Sign In
+            </Link>
+          </Button>
+        ) : (
+          <Link 
+            href="/signin"
+            className="hover:text-gray-300 transition-colors"
+          >
+            Sign In
+          </Link>
+        )}
+      </motion.div>
     );
   };
 
@@ -116,22 +147,30 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
           onClick={toggleMenu}
           aria-label="Toggle menu"
         >
-          {isMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
+          <motion.div
+            animate={{ rotate: isMenuOpen ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {isMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </motion.div>
         </Button>
       </div>
 
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden mt-2 rounded-xl bg-white/10 backdrop-blur-2xl p-4 font-tektur"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ 
+              duration: 0.3,
+              ease: "easeInOut"
+            }}
+            className="md:hidden fixed top-[4.5rem] left-4 right-4 rounded-xl bg-white/10 backdrop-blur-2xl p-4 font-tektur z-50"
           >
             <div className="flex flex-col gap-4">
               {renderNavLinks(true)}
