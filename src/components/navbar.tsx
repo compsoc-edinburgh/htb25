@@ -89,7 +89,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
       >
         <Button 
           asChild 
-          className={`bg-accent-yellow hover:bg-accent-yellow/90 text-black ${
+          className={`bg-accent-yellow hover:bg-accent-yellow/90 hover:bg-black hover:text-accent-yellow text-black ${
             mobile ? "w-full" : ""
           }`}
         >
