@@ -1,7 +1,0 @@
--- AlterTable
-ALTER TABLE "User" ADD COLUMN     "onboarded" BOOLEAN NOT NULL DEFAULT false,
-ALTER COLUMN "first_name" DROP NOT NULL,
-ALTER COLUMN "last_name" DROP NOT NULL,
-ALTER COLUMN "university_name" DROP NOT NULL,
-ALTER COLUMN "university_year" DROP NOT NULL,
-ALTER COLUMN "country" DROP NOT NULL;
