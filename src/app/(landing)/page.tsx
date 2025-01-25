@@ -55,7 +55,7 @@ export default function Page() {
   return (
     <main className="w-full max-w-screen-xl px-4 md:mx-auto space-y-8">
       <div className="my-12 flex flex-col items-center text-center max-w-screen-lg mx-auto lg:my-26">
-        <img src="/htb-logo.png" alt="HTB Logo" className="h-full w-full" />
+        <img src="/HTB-logo.png" alt="HTB Logo" className="h-full w-full" />
       </div>
 
       <div className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-6">
