@@ -40,7 +40,6 @@ const MailingListForm = () => {
         }
         catch (error){
             if (error instanceof z.ZodError) {
-                // Handle Zod validation errors
                 setLoading(false);
                 toast.error(error.errors[0]?.message || "Invalid email.");
             } else {

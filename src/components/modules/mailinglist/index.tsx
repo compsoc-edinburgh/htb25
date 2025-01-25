@@ -6,7 +6,7 @@ import MailingListForm from "./mailing-list-form";
 const MailingListInfoCard = () => {
     return (
         <Card className="border-0 bg-[#FAD2A0]">
-            <CardContent className="font-tekstur text-[#F0563C] text-3xl font-semibold text-left p-8">
+            <CardContent className="font-tekstur text-[#F0563C] text-xl md:text-2xl lg:text-3xl font-semibold text-left p-8">
                 Join our mailing list to stay up to date on the hackathon!
             </CardContent>
         </Card>
@@ -27,8 +27,8 @@ const MailingListInputCard = () => {
 
     return (
         <Card className="border-0 bg-white w-full h-full items-center">
-            <CardContent className="flex items-center gap-2 p-5 w-full h-full">
-                <MailingListForm></MailingListForm>
+            <CardContent className="flex items-center justify-center gap-2 p-5 w-full h-full">
+                <MailingListForm />
             </CardContent>
         </Card>
     )
