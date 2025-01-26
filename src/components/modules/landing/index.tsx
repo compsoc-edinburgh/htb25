@@ -20,7 +20,9 @@ const RegisterCard = () => (
             <p className="font-tektur text-xl font-bold md:text-2xl lg:text-3xl">
               Register
             </p>
-            <p className="font-tektur text-2xs md:text-xs lg:text-sm">RESERVED SEATS!</p>
+            <p className="text-2xs font-tektur md:text-xs lg:text-sm">
+              Get your ticket!
+            </p>
           </div>
         </div>
       </CardContent>
@@ -60,8 +62,8 @@ const VolunteerCard = () => (
         </h2>
         <div className="flex flex-col lg:flex-row lg:justify-between">
           <p className="lg:text-md font-tektur text-sm font-light md:text-base">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-            vehicula
+            Could be anything from photography, to social media, to anything
+            related to helping out with the event!
           </p>
           <div className="flex justify-end">
             <Button
@@ -83,35 +85,36 @@ const VolunteerCard = () => (
   </Card>
 );
 
-const WelcomeCard = () => (
-  <Card className="relative h-full border-0 bg-white text-black">
-    <div className="absolute inset-0 z-0">
-      <img
-        src="/logo_back.png"
-        alt="Background Logo"
-        className="h-full w-full object-cover opacity-50"
-      />
-    </div>
-    <CardContent className="relative z-10 space-y-4 p-6">
-      <h2 className="font-tektur text-3xl font-semibold md:text-4xl lg:text-5xl">
-        WELCOME TO HTB!
-      </h2>
-      <p className="text-base md:text-lg lg:text-xl">
-        This September, join 1,000+ hackers from around the world for a
-        hackathon like no other. Discover a community of like-minded hackers,
-        connect with world-class mentors, and build because you love to build.
-        At Hack the North 11, you're in for a great time with engaging
-        workshops, fun activities, and the chance to network with the most
-        exciting companies in tech!
-      </p>
-      <div className="flex justify-end">
-        <Button className="mt-2 w-full bg-blue-600 px-4 py-2 font-tektur text-lg text-white hover:bg-blue-700 md:text-xl lg:w-fit lg:text-2xl">
-          Get Started
-        </Button>
+const WelcomeCard = () => {
+  return (
+    <Card className="relative h-full border-0 bg-white text-black">
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/logo_back.png"
+          alt="Background Logo"
+          className="h-full w-full object-cover opacity-50"
+        />
       </div>
-    </CardContent>
-  </Card>
-);
+      <CardContent className="relative z-10 flex h-full flex-col justify-between p-6">
+        <div>
+          <h2 className="mb-4 font-tektur text-3xl font-semibold md:text-4xl lg:text-5xl">
+            WELCOME TO HTB!
+          </h2>
+          <p className="text-base md:text-lg lg:text-xl">
+            Hack The Burgh is back for its 11th year! Join us for a weekend of
+            hacking, workshops, and fun in Edinburgh. Whether you're a seasoned
+            hacker or just starting out, we have something for everyone.
+          </p>
+        </div>
+        <div className="flex justify-end">
+          <Button className="mt-2 w-full bg-blue-600 px-4 py-2 font-tektur text-lg text-white hover:bg-blue-700 md:text-xl lg:w-fit lg:text-2xl">
+            <Link href="/apply">Get Started</Link>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 export const LandingCard = {
   CodeCard,
