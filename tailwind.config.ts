@@ -7,6 +7,11 @@ export default withUt({
   content: ["./src/**/*.tsx"],
   theme: {
     extend: {
+      keyframes: {
+        shine: {
+          "100%": { transform: "translateX(100%)" },
+        },
+      },
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
         tektur: ["var(--font-tektur)"],

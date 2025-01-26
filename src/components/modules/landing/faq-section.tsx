@@ -1,6 +1,6 @@
-interface FAQItem {
+export interface FAQItem {
   question: string;
-  answer: string;
+  answer: React.ReactNode;
 }
 
 const FAQ_ITEMS = [
