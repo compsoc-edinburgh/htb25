@@ -7,7 +7,7 @@ export default async function MerchAccessLayout({
 }: Readonly<PropsWithChildren>) {
 
   return (
-    <section>
+    <section className="w-screen flex flex-col items-center justify-center">
       <WebGLBackground />
       {children}
     </section>
