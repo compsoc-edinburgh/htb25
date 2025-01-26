@@ -5,7 +5,8 @@ import { useEffect, useState } from "react"
 const TIME_UNITS = {
   DAYS: 86400,
   HOURS: 3600,
-  MINUTES: 60
+  MINUTES: 60,
+  SECONDS: 1
 } as const
 
 interface TimeUnit {
@@ -39,10 +40,11 @@ export function CountdownTimer() {
     { value: Math.floor(timeLeft / TIME_UNITS.DAYS), label: "days" },
     { value: Math.floor((timeLeft % TIME_UNITS.DAYS) / TIME_UNITS.HOURS), label: "hrs" },
     { value: Math.floor((timeLeft % TIME_UNITS.HOURS) / TIME_UNITS.MINUTES), label: "mins" },
+    { value: Math.floor(timeLeft % TIME_UNITS.MINUTES), label: "secs" }
   ]
 
   return (
-    <div className="grid grid-cols-3 gap-12">
+    <div className="grid grid-cols-4 gap-12">
       {calculateTimeUnits().map(({ value, label }) => (
         <div key={label} className="flex flex-col">
           <span className="text-4xl md:text-5xl font-tektur font-bold">
