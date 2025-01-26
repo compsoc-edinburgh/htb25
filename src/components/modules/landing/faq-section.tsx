@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Image from "next/image";
 
 interface FAQItem {
   question: string;
@@ -134,18 +135,16 @@ const FAQ_ITEMS: FAQItem[] = [
 
 const FAQAccordionItem = ({ faq }: { faq: FAQItem }) => {
   return (
-    <details className="group mb-4 rounded-lg bg-white p-4 shadow-md">
-      <summary className="flex cursor-pointer items-center justify-between text-base font-medium text-black md:text-xl lg:text-2xl">
+    <details className="group w-full max-w-2xl rounded-lg bg-white p-4 shadow-md">
+      <summary className="md:text-md flex cursor-pointer items-center justify-between text-base font-medium text-black lg:text-lg">
         <span className="w-3/4">{faq.question}</span>
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-purple-200">
           <span className="text-purple-500 transition-transform duration-200 group-open:rotate-180">
-            ▲
+            <Image src="/other/arrow.svg" alt="Arrow" width={16} height={16} />
           </span>
         </span>
       </summary>
-      <p className="mt-2 text-sm text-black md:text-base lg:text-lg">
-        {faq.answer}
-      </p>
+      <p className="md:text-md mt-2 text-neutral-600">{faq.answer}</p>
     </details>
   );
 };

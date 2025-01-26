@@ -14,7 +14,7 @@ export default async function LandingLayout({
       <WebGLBackground />
       <Navbar isAdmin={user.sessionClaims?.metadata.role === "admin"} />
       {children}
-      <div className="mx-8 mt-16 mb-4">
+      <div className="mx-auto mb-4 mt-16 max-w-screen-xl px-4">
         <Footer />
       </div>
     </section>

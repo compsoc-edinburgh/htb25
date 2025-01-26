@@ -73,7 +73,17 @@ const TIER_STYLES = {
   },
 } as const;
 
-const SponsorBox = ({ sponsor }: { sponsor: Sponsor }) => {
+const UNRELEASED_COLORS = [
+  "#FAD2A0", // orange
+] as const;
+
+const SponsorBox = ({
+  sponsor,
+  index,
+}: {
+  sponsor: Sponsor;
+  index: number;
+}) => {
   return (
     <div
       className={cn(
@@ -81,8 +91,16 @@ const SponsorBox = ({ sponsor }: { sponsor: Sponsor }) => {
         "aspect-video border border-border/10 p-6 transition-all duration-300",
         !sponsor.isReleased && "cursor-default",
         sponsor.isReleased && "hover:border-accent/50",
-        TIER_STYLES[sponsor.tier].card,
+        sponsor.isReleased ? TIER_STYLES[sponsor.tier].card : "",
       )}
+      style={
+        !sponsor.isReleased
+          ? {
+              backgroundColor:
+                UNRELEASED_COLORS[index % UNRELEASED_COLORS.length],
+            }
+          : undefined
+      }
     >
       {sponsor.tier === "platinum" && (
         <div className="absolute inset-0 -translate-x-full animate-[shine_3s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -116,7 +134,7 @@ const SponsorBox = ({ sponsor }: { sponsor: Sponsor }) => {
         </>
       ) : (
         <div className="flex flex-col items-center justify-center gap-2 text-center">
-          <div className="text-lg font-semibold text-neutral-300">
+          <div className="text-lg font-semibold text-[#F0563C]">
             Coming Soon
           </div>
         </div>
@@ -133,8 +151,8 @@ const SponsorsSection = () => {
       </h2>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {SPONSOR_DATA.map((sponsor) => (
-          <SponsorBox key={sponsor.name} sponsor={sponsor} />
+        {SPONSOR_DATA.map((sponsor, index) => (
+          <SponsorBox key={sponsor.name} sponsor={sponsor} index={index} />
         ))}
       </div>
     </section>
