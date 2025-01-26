@@ -188,7 +188,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
 
   return (
     <>
-      <nav className="fixed left-0 top-3 z-50 mx-4 flex h-14 w-[calc(100vw-2rem)] items-center justify-between rounded-2xl border border-border/10 bg-black/30 p-2 font-tektur font-medium text-white shadow backdrop-blur-xl md:mx-2">
+      <nav className="fixed left-1/2 top-3 z-50 -translate-x-1/2 flex h-14 w-[calc(100vw-2rem)] md:w-[calc(100vw-16rem)] items-center justify-between rounded-2xl border border-border/10 bg-black/30 p-2 font-tektur font-medium text-white shadow backdrop-blur-xl">
         <div className="flex items-center gap-4 pl-4 md:gap-8">
           <Link href="/" aria-label="Home" onClick={scrollToTop}>
             <img
@@ -234,7 +234,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="pointer-events-none fixed inset-0 left-0 top-0 h-full w-full bg-black/50"
-            ></motion.div>
+             />
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
