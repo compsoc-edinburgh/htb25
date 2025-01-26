@@ -27,7 +27,7 @@ export default function Page() {
         <LandingCard.VolunteerCard />
       </div>
 
-      <div className = "grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-6 py-8 md:py-16">
+      <div className = "grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-6 py-8">
         <div className = "col-span-1 md:col-span-3 lg:col-span-2">
           <MailingListCards.MailingListInfoCard />
         </div>
