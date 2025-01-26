@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { useTypewriterEffect } from "~/hooks/use-typewriter-effect";
 
 
@@ -24,7 +24,7 @@ const TERMINAL_PATTERNS = [
 ];
 
 export function Terminal({ onSubmit }: { onSubmit: (input: string) => void}) {
-  const isMobile = window.matchMedia("(max-width: 600px)").matches;
+  const [isMobile, setIsMobile] = useState(false);
   const { displayedCode, highlightCode } = useTypewriterEffect(CODE_SNIPPET, TERMINAL_PATTERNS);
   const [userInput, setUserInput] = useState("");
 
@@ -38,6 +38,11 @@ export function Terminal({ onSubmit }: { onSubmit: (input: string) => void}) {
       setUserInput("");
     }
   };
+
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(max-width: 640px)").matches);
+  }, [])
 
   return (
     <div>

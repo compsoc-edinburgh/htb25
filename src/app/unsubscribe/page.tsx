@@ -1,13 +1,13 @@
-import UnsubscribeForm from "./unsubscribe-form"
-import Navbar from "~/components/navbar";
+"use client";
+import { Suspense } from "react";
+import UnsubscribeForm from "./unsubscribe-form";
 import WebGLBackground from "~/components/gradient-background";
+
 export default function UnsubscribePage() {
-
-    return(
-        <div>
-            <WebGLBackground></WebGLBackground>
-            <UnsubscribeForm></UnsubscribeForm>
-        </div>
-    )
-};
-
+  return (
+    <Suspense>
+      <WebGLBackground />
+      <UnsubscribeForm />
+    </Suspense>
+  );
+}

@@ -244,7 +244,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
                 ease: "easeInOut",
                 bounce: 0,
               }}
-              className="fixed left-4 right-4 top-[5rem] z-50 h-[calc(100vh-5.75rem)] rounded-2xl border border-border/10 bg-black/20 p-4 font-tektur shadow-2xl backdrop-blur-xl md:hidden"
+              className="fixed left-4 right-4 top-[5rem] z-50 h-[calc(100dvh-5.75rem)] rounded-2xl border border-border/10 bg-black/20 p-4 font-tektur shadow-2xl backdrop-blur-xl md:hidden"
             >
               <div className="flex h-full flex-col justify-between gap-2">
                 {renderNavLinks(true)}

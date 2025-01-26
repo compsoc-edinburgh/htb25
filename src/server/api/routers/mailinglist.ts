@@ -25,6 +25,18 @@ export const mailingListRouter = createTRPCRouter({
         });
         return !!mailinglistuser;
       }),
+    checkToken: publicProcedure
+    .input(z.string().email())
+    .mutation(async ({ ctx, input }) => {
+        const mailinglistuser = await ctx.db.mailingList.findUnique({
+          where: { email: input },
+        });
+        if (!mailinglistuser) {
+            throw new Error("User already unsubscribed.");
+          }
+        return mailinglistuser.token;
+      })
+    ,
     unsubscribe: publicProcedure
     .input(z.string().email())
     .mutation(async ({ ctx, input }) => {

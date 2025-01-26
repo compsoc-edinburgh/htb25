@@ -80,5 +80,6 @@ model Application {
 model MailingList {
   id         String   @id @default(cuid())
   email      String   @unique
+  token      String   @default(uuid()) @unique
   created_at DateTime @default(now())
 }

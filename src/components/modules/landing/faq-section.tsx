@@ -1,9 +1,11 @@
-export interface FAQItem {
+import { ReactNode } from "react";
+
+interface FAQItem {
   question: string;
-  answer: React.ReactNode;
+  answer: ReactNode;
 }
 
-const FAQ_ITEMS = [
+const FAQ_ITEMS: FAQItem[] = [
   {
     question: "When do applications close?",
     answer: (

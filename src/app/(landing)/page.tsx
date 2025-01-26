@@ -5,8 +5,8 @@ import { SponsorsComponents } from "~/components/modules/landing/sponsors-sectio
 
 export default function Page() {
   return (
-    <main className="w-full max-w-screen-xl space-y-8 px-4 md:mx-auto">
-      <div className="lg:my-26 mx-auto my-12 flex max-w-screen-lg flex-col items-center text-center">
+    <main className="w-full max-w-screen-xl px-4 md:mx-auto space-y-8">
+      <div className="my-12 flex flex-col items-center text-center max-w-screen-lg mx-auto lg:my-26 py-32 md:py-44">
         <img src="/HTB-logo.png" alt="HTB Logo" className="h-full w-full" />
       </div>
 
@@ -27,8 +27,8 @@ export default function Page() {
         <LandingCard.VolunteerCard />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-6">
-        <div className="col-span-1 md:col-span-3 lg:col-span-2">
+      <div className = "grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-6 py-8">
+        <div className = "col-span-1 md:col-span-3 lg:col-span-2">
           <MailingListCards.MailingListInfoCard />
         </div>
         <div className="col-span-1 flex h-full flex-col space-y-2 md:col-span-3 lg:col-span-2">
