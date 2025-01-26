@@ -6,7 +6,7 @@ import { FAQComponents } from "~/components/modules/landing/faq-section";
 export default function Page() {
   return (
     <main className="w-full max-w-screen-xl px-4 md:mx-auto space-y-8">
-      <div className="my-12 flex flex-col items-center text-center max-w-screen-lg mx-auto lg:my-26">
+      <div className="my-12 flex flex-col items-center text-center max-w-screen-lg mx-auto lg:my-26 py-32 md:py-44">
         <img src="/HTB-logo.png" alt="HTB Logo" className="h-full w-full" />
       </div>
   
@@ -27,7 +27,7 @@ export default function Page() {
         <LandingCard.VolunteerCard />
       </div>
 
-      <div className = "grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-6">
+      <div className = "grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-6 py-8">
         <div className = "col-span-1 md:col-span-3 lg:col-span-2">
           <MailingListCards.MailingListInfoCard />
         </div>
@@ -40,7 +40,7 @@ export default function Page() {
         </div>
       </div>
 
-      <section className="mt-16 w-full max-w-7xl mx-auto text-left p-6 rounded-lg bg-accent-yellow border-2">
+      <section className="my-8 w-full max-w-7xl mx-auto text-left p-6 rounded-lg bg-accent-yellow">
         <h2 className="mb-8 text-center sm:text-xl md:text-2xl lg:text-3xl font-bold text-black">
           You have questions, we have answers!
         </h2>

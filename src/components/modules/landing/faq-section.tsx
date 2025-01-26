@@ -1,6 +1,8 @@
+import { ReactNode } from "react";
+
 interface FAQItem {
   question: string;
-  answer: string;
+  answer: ReactNode;
 }
 
 const FAQ_ITEMS = [
