@@ -27,16 +27,13 @@ export default function Page() {
         <LandingCard.VolunteerCard />
       </div>
 
-      <div className = "grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-6 py-8">
-        <div className = "col-span-1 md:col-span-3 lg:col-span-2">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-6 py-8">
+        <div className="col-span-1 md:col-span-3 lg:col-span-2">
           <MailingListCards.MailingListInfoCard />
         </div>
         <div className="col-span-1 flex h-full flex-col space-y-2 md:col-span-3 lg:col-span-2">
           <MailingListCards.ArrowsCard arrowColor="white" cardColor="#2A4FEE" />
-          <MailingListCards.ArrowsCard
-            arrowColor="#2A4FEE"
-            cardColor="#DFA8F6"
-          />
+          <MailingListCards.ArrowsCard arrowColor="#2A4FEE" cardColor="#DFA8F6" />
         </div>
         <div className="col-span-1 md:col-span-3 lg:col-span-2">
           <MailingListCards.MailingListInputCard />

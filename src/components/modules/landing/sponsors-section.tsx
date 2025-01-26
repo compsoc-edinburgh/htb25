@@ -127,7 +127,7 @@ const SponsorBox = ({ sponsor }: { sponsor: Sponsor }) => {
 
 const SponsorsSection = () => {
   return (
-    <section className="mx-auto mt-16 w-full max-w-7xl p-6">
+    <section className="mx-auto mb-16 w-full max-w-7xl p-6">
       <h2 className="mb-12 text-center font-bold sm:text-xl md:text-2xl lg:text-3xl">
         Our Sponsors
       </h2>
