@@ -52,8 +52,12 @@ export default function CreateTeam({
       const newTeam = await createTeam.mutateAsync({
         teamName,
       });
-      
+      if (!newTeam) {
+        toast.error("There was an error creating the team, please try again.");
+        return;
+      }
       setTeam(newTeam);
+      toast.success("Team " + newTeam.name + " created successfully.");
       setJoined(true);
     } catch (err: any) {
       toast.error("There was something wrong, please try again.");
@@ -62,38 +66,6 @@ export default function CreateTeam({
 
     setLoading(false);
   };
-
-  const handleContinue = () => {
-    updateSearchParam([{ name: "step", value: "name" }]);
-
-    setApplicationType("team");
-    setStep("name");
-  };
-
-  if (team) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Team {team.name}</CardTitle>
-          <p>
-            Your team has been created. Share the code with your friends to
-            invite them to join.
-          </p>
-        </CardHeader>
-
-        <CardContent>
-          <div className="flex items-center space-x-2">
-            <Label>Team code:</Label>
-            <span className="font-bold">{team.code}</span>
-          </div>
-        </CardContent>
-
-        <CardFooter className="justify-end">
-          <Button onClick={() => handleContinue()}>Continue</Button>
-        </CardFooter>
-      </Card>
-    );
-  }
 
   return (
     <Card>
@@ -107,12 +79,16 @@ export default function CreateTeam({
         <CardContent className="space-y-2">
           <div className="space-y-1">
             <Label htmlFor="name">Name</Label>
+            <span className="text-xs text-muted-foreground font-sans p-2">
+              You can change this later
+            </span>
             <Input
               id="teamName"
               defaultValue=""
               name="teamName"
               placeholder="Autobots"
             />
+            
           </div>
         </CardContent>
         <CardFooter className="justify-end">
