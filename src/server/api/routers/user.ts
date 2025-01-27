@@ -120,4 +120,11 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
+  completeChallenge: protectedProcedure.mutation(async ({ ctx }) => {
+    return ctx.db.challengeCompletion.create({
+      data: {
+        userId: ctx.auth.userId,
+      },
+    });
+  }),
 });

@@ -1,8 +1,12 @@
 "use client"
 
-import { Terminal as TerminalIcon } from "lucide-react"
+import { Loader2, Terminal as TerminalIcon } from "lucide-react"
 import { Card } from "~/components/ui/card"
 import { Challenge, TerminalHeader, Terminal } from "~/components/modules/merch-access"
+import { toast } from "sonner"
+import { api } from "~/trpc/react"
+import { useRouter, redirect } from "next/navigation"
+import { useAuth } from "@clerk/nextjs"
 
 interface ChallengeConfig {
   fragments: number[]
@@ -17,17 +21,93 @@ const config: ChallengeConfig = {
 }
 
 export default function ChallengePage() {
-  const handleSolutionSubmit = (userInput: string) => {
+  const { userId } = useAuth();
+  const router = useRouter();
+  const utils = api.useContext();
+  const { data: userData, isLoading } = api.user.get.useQuery(undefined, {
+    enabled: !!userId
+  });
+
+  const completeMutation = api.user.completeChallenge.useMutation({
+    onSuccess: () => {
+      utils.user.get.invalidate()
+    },
+  })
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen w-full font-mono text-white">
+        <div className="py-8">
+          <Card className="bg-black/40 p-8 backdrop-blur">
+            <div className="space-y-6 text-center">
+              <Loader2 className="mx-auto h-16 w-16 text-accent-yellow animate-spin" />
+            </div>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
+  if (!userId) {
+    return (
+      <div className="min-h-screen w-full font-mono text-white">
+        <div className="py-8">
+          <Card className="bg-black/40 p-8 backdrop-blur">
+            <div className="space-y-6 text-center">
+              <TerminalIcon className="mx-auto h-16 w-16 text-accent-yellow" />
+              <h1 className="text-2xl font-bold">Terminal Access Restricted</h1>
+              <p className="text-base text-gray-400">SECURITY PROTOCOL ACTIVE</p>
+              <div className="my-6 font-mono text-base text-red-500">
+                <p>! UNAUTHORIZED ACCESS DETECTED !</p>
+                <p>Authentication required to proceed</p>
+              </div>
+              <button 
+                onClick={() => router.push('/signin')}
+                className="px-6 py-3 text-base bg-accent-yellow text-black rounded-lg hover:bg-accent-yellow/90 transition"
+              >
+                Authenticate Now
+              </button>
+            </div>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
+  const handleSolutionSubmit = async (userInput: string) => {
     try {
       const input = userInput.trim()
       if (input === config.solution) {
-        console.log("Access granted! You've successfully bypassed the security system.")
+        toast.success("Access Granted! You've successfully bypassed the security system.")
+        
+        await completeMutation.mutateAsync()
       } else {
-        console.log("Access denied")
+        toast.error("Access Denied. Invalid solution. Please try again.")
       }
-    } catch {
-      console.log("Access denied")
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.")
     }
+  }
+
+  if (!userData) {
+    return (
+      <div className="min-h-screen font-mono text-white">
+        <div className="container py-8">
+          <Card className="bg-black/40 p-8 backdrop-blur">
+            <div className="space-y-4 text-center">
+              <h1 className="text-xl font-bold">Access Restricted</h1>
+              <p>You need to register to access this challenge.</p>
+              <button 
+                onClick={() => router.push('/register')}
+                className="px-4 py-2 bg-accent-yellow text-black rounded hover:bg-accent-yellow/90 transition"
+              >
+                Register Now
+              </button>
+            </div>
+          </Card>
+        </div>
+      </div>
+    )
   }
 
   return (
