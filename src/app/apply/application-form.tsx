@@ -78,7 +78,7 @@ export default function ApplicationForm({
     countries.all.find((c) => c.alpha2 === user.country),
   );
   const [university, setUniversity] = useState<University | undefined>(
-    universities.find((u) => u.name === user.university_name || u.name === "University of Edinburgh"),
+    universities.find((u) => u.name === user.university_name) || universities.find((u) => u.name === "University of Edinburgh"),
   );
   const [universityYear, setUniversityYear] = useState(
     user.university_year ?? undefined,
