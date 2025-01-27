@@ -88,7 +88,7 @@ export default function EmailStep({
 
   const isUniEmail = (e = email) => {
     const domain = e?.split("@")[1] as string;
-    return university?.domains.includes(domain);
+    return university?.domains?.some((d) => domain.endsWith(d));
   };
 
   return (
