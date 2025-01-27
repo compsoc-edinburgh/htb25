@@ -47,7 +47,7 @@ export default function Page() {
         <SponsorsComponents.SponsorsSection />
       </section>
       
-       <section className="mx-auto mb-28 w-full max-w-7xl">
+       <section className="mx-auto mb-28 w-full max-w-7xl" id="faq">
         <h2 className="mb-4 text-center font-bold sm:text-xl md:text-2xl lg:text-3xl">
           Frequently Asked Questions
         </h2>
