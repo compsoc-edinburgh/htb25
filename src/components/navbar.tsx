@@ -137,7 +137,7 @@ export default function Navbar({
                   mobile ? "w-full" : ""
                 }`}
               >
-                <Link href="/dashboard" className={mobile ? "text-white" : ""}>
+                <Link href="/dashboard" className={""}>
                   Dashboard
                 </Link>
               </Button>

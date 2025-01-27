@@ -18,6 +18,9 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { ApplicationStep } from "../application-form";
 import { useSearchParamsHelper } from "~/lib/helpers";
 import { useUser } from "@clerk/nextjs";
+import { LogOut } from "lucide-react";
+import { api } from "~/trpc/react";
+import { toast } from "sonner";
 
 export default function TeamStep({
   team,
@@ -35,12 +38,15 @@ export default function TeamStep({
   const { user } = useUser();
   const { updateSearchParam } = useSearchParamsHelper();
 
+  const leaveTeam = api.team.leave.useMutation();
+
   const [joined, setJoined] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState<"individual" | "create" | "join">(
     team ? (team.created_by === user?.id ? "create" : "join") : "individual",
   );
 
-  if (!joined && team) {
+  if (team) {
     return (
       <Card>
         <CardHeader>
@@ -48,26 +54,47 @@ export default function TeamStep({
         </CardHeader>
         <CardContent className="flex flex-col justify-between gap-8">
           <CardDescription>
-            You have already{" "}
-            {team.created_by === user?.id ? "created" : "joined"} the team{" "}
-            {team?.name}. You can continue with your application.
+            You have {team.created_by === user?.id ? "created" : "joined"} the
+            team {team?.name}. You can continue with your application.
           </CardDescription>
-          <div>
-            <Button
-              variant={"secondary"}
-              onClick={() => {
-                updateSearchParam([{ name: "step", value: "name" }]);
-                setApplicationType("individual");
-                setStep("name");
-              }}
-            >
-              Don't want to join as a team?
-            </Button>
+          <div className="space-y-2">
+            <p className="font-sans text-sm text-muted-foreground">
+              By sharing the code below, you can invite your friends to create a
+              team of up to 6 members.
+            </p>
+            <div className="my-3 flex items-center space-x-2">
+              <Label>Team code:</Label>
+              <span className="inline-block rounded bg-muted p-1 px-3 font-mono text-white">
+                {team.code}
+              </span>
+            </div>
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex justify-between gap-3">
           <Button
-            className="w-full"
+            variant={"destructive"}
+            onClick={async (e) => {
+              e.preventDefault();
+              try {
+                setLoading(true);
+                await leaveTeam.mutateAsync({
+                  team_id: team.id,
+                });
+                toast.success("You have left team " + team.name);
+                setTeam(undefined);
+              } catch (err) {
+                console.error(err);
+                toast.error("There was something wrong, please try again.");
+              }
+
+              setLoading(false);
+            }}
+            loading={loading}
+          >
+            Leave team <LogOut />
+          </Button>
+          <Button
+            className="flex-1"
             onClick={() => {
               updateSearchParam([{ name: "step", value: "name" }]);
 
@@ -87,7 +114,8 @@ export default function TeamStep({
       <Label>Team</Label>
       <p className="text-sm text-muted-foreground">
         Apply as an individual or as part of a team.
-      <br />You can change this later after applying.
+        <br />
+        You can change this later.
       </p>
       <Tabs
         defaultValue={tab}
@@ -95,15 +123,9 @@ export default function TeamStep({
         onValueChange={(t) => setTab(t as typeof tab)}
       >
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger disabled={joined} value="individual">
-            Individual
-          </TabsTrigger>
-          <TabsTrigger disabled={joined} value="create">
-            Create a team
-          </TabsTrigger>
-          <TabsTrigger disabled={joined} value="join">
-            Join a team
-          </TabsTrigger>
+          <TabsTrigger value="individual">Individual</TabsTrigger>
+          <TabsTrigger value="create">Create a team</TabsTrigger>
+          <TabsTrigger value="join">Join a team</TabsTrigger>
         </TabsList>
         <TabsContent value="individual">
           <Card>

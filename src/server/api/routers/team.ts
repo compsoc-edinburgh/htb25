@@ -58,7 +58,15 @@ export const teamRouter = createTRPCRouter({
           },
         });
 
-        return team;
+        return await ctx.db.team.findFirst({
+          where: {
+            id: team.id,
+          },
+
+          include: {
+            members: true,
+          },
+        });
       } catch (err) {
         console.error(err);
         throw new Error("ERROR");
@@ -98,7 +106,15 @@ export const teamRouter = createTRPCRouter({
         },
       });
 
-      return team;
+      return await ctx.db.team.findFirst({
+        where: {
+          id: team.id,
+        },
+
+        include: {
+          members: true,
+        },
+      });;
     }),
   leave: protectedProcedure
     .input(
