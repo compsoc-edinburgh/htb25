@@ -84,7 +84,7 @@ export default function NameStep({
           </p>
         </div>
         <div className="flex flex-1 flex-col gap-6 py-3">
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <Label htmlFor="pronouns">Pronouns</Label>
             <Select
               defaultValue={pronouns}
@@ -105,7 +105,7 @@ export default function NameStep({
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="firstName">First Name</Label>
             <Input
