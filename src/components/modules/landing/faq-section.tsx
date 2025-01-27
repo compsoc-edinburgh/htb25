@@ -134,12 +134,12 @@ const FAQ_ITEMS: FAQItem[] = [
 ];
 const FAQAccordionItem = ({ faq }: { faq: FAQItem }) => {
   return (
-    <details className="group w-full max-w-7xl rounded-lg bg-white/5 p-6 shadow-[0_0_30px_rgba(255,255,255,0.05)] backdrop-blur-xl border border-white/10 transition-all duration-300 hover:bg-white/10 hover:border-white/20">
+    <details className="group w-full max-w-5xl rounded-lg bg-white/5 p-6 shadow-[0_0_30px_rgba(255,255,255,0.05)] backdrop-blur-xl border border-white/10 transition-all duration-300 hover:bg-white/10 hover:border-white/20">
       <summary className="md:text-md flex cursor-pointer items-center justify-between text-base font-medium text-white/90 lg:text-lg">
         <span className="w-3/4">{faq.question}</span>
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
+        <span className="flex h-7 w-7 md:h-9 md:w-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
           <span className="text-white/80 transition-transform duration-200 group-open:rotate-180">
-            <Image src="/other/arrow.svg" alt="Arrow" width={16} height={16} />
+            <Image src="/other/arrow.svg" alt="Arrow" width={14} height={14} className="md:w-4 md:h-4" />
           </span>
         </span>
       </summary>
