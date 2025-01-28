@@ -1,12 +1,12 @@
 "use client"
 
-import { Loader2, Terminal as TerminalIcon } from "lucide-react"
+import { CheckIcon, Loader2, Terminal as TerminalIcon } from "lucide-react"
 import { Card } from "~/components/ui/card"
 import { Challenge, TerminalHeader, Terminal } from "~/components/modules/merch-access"
 import { toast } from "sonner"
 import { api } from "~/trpc/react"
 import { useRouter, redirect } from "next/navigation"
-import { useAuth } from "@clerk/nextjs"
+import { useAuth, useUser } from "@clerk/nextjs"
 
 interface ChallengeConfig {
   fragments: number[]
@@ -21,20 +21,12 @@ const config: ChallengeConfig = {
 }
 
 export default function ChallengePage() {
-  const { userId } = useAuth();
   const router = useRouter();
-  const utils = api.useContext();
-  const { data: userData, isLoading } = api.user.get.useQuery(undefined, {
-    enabled: !!userId
-  });
+  const { isSignedIn, isLoaded } = useUser();
+  const completeMutation = api.user.completeChallenge.useMutation();
+  const { data: challengeCompletion, isLoading: isCheckingCompletion } = api.user.getChallengeCompletion.useQuery();
 
-  const completeMutation = api.user.completeChallenge.useMutation({
-    onSuccess: () => {
-      utils.user.get.invalidate()
-    },
-  })
-
-  if (isLoading) {
+  if (!isLoaded || isCheckingCompletion) {
     return (
       <div className="min-h-screen w-full font-mono text-white">
         <div className="py-8">
@@ -48,7 +40,7 @@ export default function ChallengePage() {
     )
   }
 
-  if (!userId) {
+  if (!isSignedIn) {
     return (
       <div className="min-h-screen w-full font-mono text-white">
         <div className="py-8">
@@ -74,6 +66,26 @@ export default function ChallengePage() {
     )
   }
 
+  if (challengeCompletion) {
+    return (
+      <div className="min-h-screen w-full font-mono text-white">
+        <div className="py-8">
+          <Card className="bg-black/40 p-8 backdrop-blur">
+            <div className="space-y-6 text-center">
+              <CheckIcon className="mx-auto h-16 w-16 text-green-500" />
+              <h1 className="text-2xl font-bold">Terminal Access Granted</h1>
+              <p className="text-base text-gray-400">Challenge completed successfully</p>
+              <div className="my-6 font-mono text-base text-green-500">
+                <p>Access request sent to terminal system</p>
+                <p>Please wait for confirmation</p>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
   const handleSolutionSubmit = async (userInput: string) => {
     try {
       const input = userInput.trim()
@@ -87,27 +99,6 @@ export default function ChallengePage() {
     } catch (error) {
       toast.error("Something went wrong. Please try again.")
     }
-  }
-
-  if (!userData) {
-    return (
-      <div className="min-h-screen font-mono text-white">
-        <div className="container py-8">
-          <Card className="bg-black/40 p-8 backdrop-blur">
-            <div className="space-y-4 text-center">
-              <h1 className="text-xl font-bold">Access Restricted</h1>
-              <p>You need to register to access this challenge.</p>
-              <button 
-                onClick={() => router.push('/register')}
-                className="px-4 py-2 bg-accent-yellow text-black rounded hover:bg-accent-yellow/90 transition"
-              >
-                Register Now
-              </button>
-            </div>
-          </Card>
-        </div>
-      </div>
-    )
   }
 
   return (

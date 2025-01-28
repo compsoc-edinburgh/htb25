@@ -14,7 +14,6 @@ export default async function MerchAccessLayout({
       <WebGLBackground />
       <Navbar isAdmin={user.sessionClaims?.metadata.role === "admin"} />
       {children}
-      <Footer />
     </section>
   );
 }

@@ -49,8 +49,8 @@ export const userRouter = createTRPCRouter({
         include: {
           team: {
             include: {
-              members: true
-            }
+              members: true,
+            },
           },
         },
       });
@@ -87,7 +87,7 @@ export const userRouter = createTRPCRouter({
         });
       }
 
-      console.log(input.pronouns)
+      console.log(input.pronouns);
 
       const metadata = {
         pronouns: input.pronouns,
@@ -103,7 +103,7 @@ export const userRouter = createTRPCRouter({
         needs_reimbursement: input.needsReimbursement,
         travelling_from: input.travellingFrom,
         dietary_restrictions: input.dietaryRestrictions,
-        calendar_email: input.calendarEmail
+        calendar_email: input.calendarEmail,
       };
 
       // Save other information in clerk metadata
@@ -123,6 +123,13 @@ export const userRouter = createTRPCRouter({
   completeChallenge: protectedProcedure.mutation(async ({ ctx }) => {
     return ctx.db.challengeCompletion.create({
       data: {
+        userId: ctx.auth.userId,
+      },
+    });
+  }),
+  getChallengeCompletion: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.db.challengeCompletion.findUnique({
+      where: {
         userId: ctx.auth.userId,
       },
     });
