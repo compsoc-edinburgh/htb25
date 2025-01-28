@@ -113,7 +113,7 @@ export default function Navbar({
   );
 
   const renderAuthSection = (mobile = false) => {
-    if (!isLoaded) return <span className="text-gray-400">Loading...</span>;
+    if (!isLoaded) return <span className="text-gray-400 pr-4">Loading...</span>;
 
     if (isSignedIn) {
       return (
@@ -129,7 +129,7 @@ export default function Navbar({
           }
           transition={{ delay: mobile ? navLinks.length * 0.1 : 0, bounce: 0 }}
         >
-          <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">
+          <div className="flex flex-col items-center justify-center gap-4 lg:flex-row pr-4">
             {application ? (
               <Button
                 asChild

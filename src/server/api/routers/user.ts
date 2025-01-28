@@ -7,9 +7,11 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
+const CHALLENGE_ONE_SOLUTION = process.env.CHALLENGE_ANSWER;
+
 export const userRouter = createTRPCRouter({
   get: protectedProcedure.query(async ({ ctx }) => {
-    console.log("in trpc", ctx.auth.userId); 
+    console.log("in trpc", ctx.auth.userId);
     return ctx.db.user.findUnique({
       where: { id: ctx.auth.userId },
       include: {
@@ -121,13 +123,24 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
-  completeChallenge: protectedProcedure.mutation(async ({ ctx }) => {
-    return ctx.db.challengeCompletion.create({
-      data: {
-        userId: ctx.auth.userId,
-      },
-    });
-  }),
+  completeChallenge: protectedProcedure
+    .input(
+      z.object({
+        solution: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      console.log("in trpc", input.solution, CHALLENGE_ONE_SOLUTION);
+      if (input.solution !== CHALLENGE_ONE_SOLUTION) {
+        throw new Error("Invalid solution");
+      }
+
+      return ctx.db.challengeCompletion.create({
+        data: {
+          userId: ctx.auth.userId,
+        },
+      });
+    }),
   getChallengeCompletion: protectedProcedure.query(async ({ ctx }) => {
     return ctx.db.challengeCompletion.findUnique({
       where: {
