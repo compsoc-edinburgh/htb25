@@ -88,7 +88,8 @@ export default function EmailStep({
 
   const isUniEmail = (e = email) => {
     const domain = e?.split("@")[1] as string;
-    return university?.domains.includes(domain);
+    if (!domain) return false;
+    return university?.domains?.some((d) => domain.endsWith(d));
   };
 
   return (
@@ -108,9 +109,12 @@ export default function EmailStep({
         <div className="flex flex-col gap-2">
           {!isUniEmail() && (
             <p className="font-sans text-sm">
-              Your email <b className="font-sans">({user?.primaryEmailAddress?.toString()})</b> does
-              not seem to be from the university you selected. Please enter an
-              email ending with{" "}
+              Your email{" "}
+              <b className="font-sans">
+                ({user?.primaryEmailAddress?.toString()})
+              </b>{" "}
+              does not seem to be from the university you selected. Please enter
+              an email ending with{" "}
               {university?.domains?.map((d, i, a) => (
                 <span key={d} className="font-sans font-bold">
                   {d}{" "}

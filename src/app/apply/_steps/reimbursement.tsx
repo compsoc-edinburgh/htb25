@@ -121,7 +121,14 @@ export default function ReimbursementStep({
         <Button onClick={handleBack} variant={"secondary"} type="button">
           Back
         </Button>
-        <Button loading={loading} type="submit" className="flex-1">
+        <Button
+          loading={loading}
+          type="submit"
+          className="flex-1"
+          disabled={
+            loading || needsReimbursement === undefined || (needsReimbursement && !travel?.length)
+          }
+        >
           Next
         </Button>
       </div>

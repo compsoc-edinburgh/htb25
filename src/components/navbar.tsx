@@ -67,15 +67,10 @@ export default function Navbar({
     {
       href: "/#sponsors",
       label: "Sponsors",
-      //onClick: (e: React.MouseEvent) => window.history.pushState({}, "", "/#sponsors"),
     },
     {
       href: "/#faq",
       label: "FAQs",
-      // onClick: (e: React.MouseEvent) => {
-      //   e.preventDefault();
-      //   window.history.pushState({}, "", "/#faq")
-      // },
     },
     {
       href: "https://2024.hacktheburgh.com",
@@ -83,16 +78,15 @@ export default function Navbar({
       external: true,
     },
     {
-      href: "#",
+      href: "mailto:hello@hacktheburgh.com",
       label: "Contact",
-      onClick: handleContactClick,
+      external: true,
     },
   ];
 
   const renderNavLinks = (mobile = false) => (
     <div className={mobile ? "flex flex-col gap-2" : "flex items-center gap-1"}>
-      {" "}
-      {navLinks.map(({ href, label, external, onClick }, index) => (
+      {navLinks.map(({ href, label, external }, index) => (
         <motion.div
           key={href}
           initial={mobile ? { opacity: 0, x: -20 } : {}}
@@ -109,7 +103,6 @@ export default function Navbar({
                 target: "_blank",
                 rel: "noopener noreferrer",
               })}
-              onClick={onClick}
             >
               {label}
             </Link>
@@ -144,7 +137,7 @@ export default function Navbar({
                   mobile ? "w-full" : ""
                 }`}
               >
-                <Link href="/dashboard" className={mobile ? "text-white" : ""}>
+                <Link href="/dashboard" className={""}>
                   Dashboard
                 </Link>
               </Button>

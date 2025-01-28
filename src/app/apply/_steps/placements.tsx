@@ -94,12 +94,12 @@ export default function PlacementsStep({
   return (
     <form
       onSubmit={handleContinue}
-      className="flex-1 flex h-full flex-col justify-between gap-3"
+      className="flex h-full flex-1 flex-col justify-between gap-3"
     >
       <div className="flex flex-col gap-3">
         <div className="rounded-xl bg-muted p-4">
           <h2 className="text-xl font-medium">Work experience</h2>
-          <p className="text-sm text-muted-foreground font-sans">
+          <p className="font-sans text-sm text-muted-foreground">
             How many tech internships/placements have you completed since
             beginning university?
           </p>
@@ -116,7 +116,7 @@ export default function PlacementsStep({
                 className={cn(
                   "my-1 flex w-full items-center gap-2 rounded-xl p-3 transition-colors",
                   option.value === placements
-                    ? "bg-accent-yellow data-[selected=true]:bg-accent-yellow text-black data-[selected=true]:text-black"
+                    ? "bg-accent-yellow text-black data-[selected=true]:bg-accent-yellow data-[selected=true]:text-black"
                     : "hover:bg-primary-50",
                 )}
                 key={key}
@@ -136,7 +136,12 @@ export default function PlacementsStep({
         <Button onClick={handleBack} variant={"secondary"} type="button">
           Back
         </Button>
-        <Button loading={loading} type="submit" className="flex-1">
+        <Button
+          loading={loading}
+          type="submit"
+          className="flex-1"
+          disabled={loading || !placements}
+        >
           Next
         </Button>
       </div>

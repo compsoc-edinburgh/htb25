@@ -1,5 +1,6 @@
 import "~/styles/globals.css";
 
+import { Analytics } from "@vercel/analytics/react"
 import { ClerkProvider } from "@clerk/nextjs";
 import { GeistSans } from "geist/font/sans";
 import { Tektur } from "next/font/google";
@@ -35,6 +36,7 @@ export default async function RootLayout({
             }
           }} />
           <TRPCReactProvider>{children}</TRPCReactProvider>
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>

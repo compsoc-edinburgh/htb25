@@ -18,6 +18,8 @@ export default async function ApplyPage() {
   // had a problem with saving the user in the db after social signin
   var user = await api.user.get();
 
+  console.log(user);
+
   if (!user) {
     user = await api.user.create({
       clerkId: clerkUser?.id,

@@ -17,6 +17,7 @@ import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import { ApplicationStep } from "../application-form";
 import { useSearchParamsHelper } from "~/lib/helpers";
+import { toast } from "sonner";
 
 export default function JoinTeam({
   team,
@@ -50,12 +51,20 @@ export default function JoinTeam({
       const res = await joinTeam.mutateAsync({
         team_code: code,
       });
-
+      if (!res) {
+        toast.error("There was an error creating the team, please try again.");
+        return;
+      }
+      toast.success("Successfully joined team " + res.name);
       setTeam(res);
       setJoined(true);
     } catch (e) {
       if (e instanceof Error && e.message === "NOTFOUND") {
         setErrors(["No team was found. Make sure you have the right code."]);
+      } else if (e instanceof Error && e.message === "TEAMFULL") {
+        setErrors([
+          "This team is full. We only allow up to 6 members per team. Would you like to create your own?",
+        ]);
       } else {
         console.error(e);
       }
@@ -63,41 +72,6 @@ export default function JoinTeam({
 
     setLoading(false);
   };
-
-  const handleContinue = () => {
-    updateSearchParam([{ name: "step", value: "name" }]);
-
-    setApplicationType("team");
-    setStep("name");
-  };
-
-  if (team) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Team {team.name}</CardTitle>
-        </CardHeader>
-
-        <CardContent className="space-y-2">
-          <p className=" text-green-400">
-            Successfully joined team {team.name}.{" "}
-          </p>
-          <p className="font-sans text-sm text-muted-foreground">
-            You can have a maximum of 6 friends joining your team by sharing the
-            code below with them.
-          </p>
-          <div className="my-3 flex items-center space-x-2">
-            <Label>Team code:</Label>
-            <span className="font-bold">{team.code}</span>
-          </div>
-        </CardContent>
-
-        <CardFooter className="justify-end">
-          <Button onClick={() => handleContinue()}>Continue</Button>
-        </CardFooter>
-      </Card>
-    );
-  }
 
   return (
     <Card>
@@ -115,18 +89,14 @@ export default function JoinTeam({
               id="code"
               defaultValue=""
               onChange={(e) => setCode(e.target.value)}
-              placeholder="XJSYY"
-              className={cn(
-                "w-full uppercase",
-                errors.length
-                  ? "border-destructive ring-4 ring-destructive/30"
-                  : "",
-              )}
+              placeholder="XJSY4"
+              data-error={errors.length > 0 ? "true" : undefined}
+              className={cn("w-full uppercase")}
             />
             {!!errors.length && (
               <ul className="px-2 py-1">
                 {errors.map((error) => (
-                  <li key={error} className="text-sm text-destructive">
+                  <li key={error} className="text-sm text-accent-red">
                     {error}
                   </li>
                 ))}
