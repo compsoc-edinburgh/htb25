@@ -106,33 +106,6 @@ export default function ChallengePage() {
     }
   }
 
-  if (true) {
-    return (
-      <div className="min-h-screen font-mono text-white">
-        <div className="container py-8">
-          <Card className="bg-black/60 backdrop-blur">
-            <TerminalHeader />
-            <div className="relative p-4">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <TerminalIcon className="h-6 w-6 text-accent-yellow" />
-                  <span className="text-accent-yellow">$ Access Denied</span>
-                </div>
-                <p className="text-gray-300 font-mono">
-                  $ <span className="text-red-500">The code challenge is currently locked.</span><br/>
-                  $ Please check this page regularly for updates.<br/>
-                  $ Contact an organizer if you believe this is an error.<br/>
-                  $ System status: MAINTENANCE MODE<br/>
-                  _
-                </p>
-              </div>
-            </div>
-          </Card>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-screen font-mono text-white">
       <div className="container py-8">
