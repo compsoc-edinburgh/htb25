@@ -42,6 +42,7 @@
     "@trpc/server": "^11.0.0-rc.446",
     "@types/canvas-confetti": "^1.9.0",
     "@uploadthing/react": "^7.1.5",
+    "@vercel/analytics": "^1.4.1",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

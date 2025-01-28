@@ -1,6 +1,6 @@
 "use client";
 
-import { Team } from "@prisma/client";
+import { Team, User } from "@prisma/client";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "~/components/ui/button";
 import {
@@ -17,16 +17,25 @@ import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import { useSearchParamsHelper } from "~/lib/helpers";
 import { toast } from "sonner";
+import { useUser } from "@clerk/nextjs";
 
 export default function JoinTeam({
   team,
   setTeam,
   setJoined,
 }: {
-  team?: Team;
-  setTeam: Dispatch<SetStateAction<Team | undefined>>;
+  team?: Team & { members?: User[] };
+  setTeam: Dispatch<
+    SetStateAction<
+      | (Team & {
+          members?: User[];
+        })
+      | undefined
+    >
+  >;
   setJoined: Dispatch<SetStateAction<boolean>>;
 }) {
+  const { user } = useUser();
 
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
@@ -43,12 +52,20 @@ export default function JoinTeam({
       const res = await joinTeam.mutateAsync({
         team_code: code,
       });
+      if (!res) {
+        toast.error("There was an error creating the team, please try again.");
+        return;
+      }
 
       setTeam(res);
       toast.success("Successfully joined team " + res.name);
     } catch (e) {
       if (e instanceof Error && e.message === "NOTFOUND") {
         setErrors(["No team was found. Make sure you have the right code."]);
+      } else if (e instanceof Error && e.message === "TEAMFULL") {
+        setErrors([
+          "This team is full. We only allow up to 6 members per team. Would you like to create your own?",
+        ]);
       } else {
         console.error(e);
       }
@@ -56,30 +73,6 @@ export default function JoinTeam({
 
     setLoading(false);
   };
-
-  if (team) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Team {team.name}</CardTitle>
-        </CardHeader>
-
-        <CardContent className="space-y-2">
-          <p className="text-green-400">
-            Successfully joined team {team.name}.{" "}
-          </p>
-          <p className="font-sans text-sm text-muted-foreground">
-            You can invite up to 3 more friends to join your team by sharing the
-            code below with them.
-          </p>
-          <div className="my-3 flex items-center space-x-2">
-            <Label>Team code:</Label>
-            <span className="font-bold">{team.code}</span>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
 
   return (
     <Card>
@@ -98,17 +91,13 @@ export default function JoinTeam({
               defaultValue=""
               onChange={(e) => setCode(e.target.value)}
               placeholder="XJSYY"
-              className={cn(
-                "w-full uppercase",
-                errors.length
-                  ? "border-destructive ring-4 ring-destructive/30"
-                  : "",
-              )}
+              data-error={errors.length > 0 ? "true" : undefined}
+              className={cn("w-full uppercase")}
             />
             {!!errors.length && (
               <ul className="px-2 py-1">
                 {errors.map((error) => (
-                  <li key={error} className="text-sm text-destructive">
+                  <li key={error} className="text-sm text-accent-red">
                     {error}
                   </li>
                 ))}

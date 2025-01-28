@@ -9,6 +9,7 @@ import {
 
 export const userRouter = createTRPCRouter({
   get: protectedProcedure.query(async ({ ctx }) => {
+    console.log("in trpc", ctx.auth.userId); 
     return ctx.db.user.findUnique({
       where: { id: ctx.auth.userId },
       include: {

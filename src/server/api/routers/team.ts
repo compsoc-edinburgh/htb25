@@ -58,7 +58,15 @@ export const teamRouter = createTRPCRouter({
           },
         });
 
-        return team;
+        return await ctx.db.team.findFirst({
+          where: {
+            id: team.id,
+          },
+
+          include: {
+            members: true,
+          },
+        });
       } catch (err) {
         console.error(err);
         throw new Error("ERROR");
@@ -95,6 +103,79 @@ export const teamRouter = createTRPCRouter({
         },
         data: {
           team_id: team?.id,
+        },
+      });
+
+      return await ctx.db.team.findFirst({
+        where: {
+          id: team.id,
+        },
+
+        include: {
+          members: true,
+        },
+      });;
+    }),
+  leave: protectedProcedure
+    .input(
+      z.object({
+        team_id: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const team = await ctx.db.team.findFirst({
+        where: {
+          id: input.team_id,
+        },
+      });
+
+      if (!team) {
+        throw new Error("NOTFOUND");
+      }
+
+      const client = await clerkClient();
+
+      await client.users.updateUserMetadata(ctx.auth.userId, {
+        publicMetadata: {
+          team_id: null,
+        },
+      });
+
+      await ctx.db.user.update({
+        where: {
+          id: ctx.auth.userId,
+        },
+        data: {
+          team_id: null,
+        },
+      });
+
+      return team;
+    }),
+  rename: protectedProcedure
+    .input(
+      z.object({
+        team_id: z.string().min(1),
+        name: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const team = await ctx.db.team.findFirst({
+        where: {
+          id: input.team_id,
+        },
+      });
+
+      if (!team) {
+        throw new Error("NOTFOUND");
+      }
+
+      await ctx.db.team.update({
+        where: {
+          id: input.team_id,
+        },
+        data: {
+          name: input.name,
         },
       });
 

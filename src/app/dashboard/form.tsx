@@ -6,13 +6,17 @@ import {
   Check,
   Edit3,
   ExternalLink,
+  Info,
+  Loader2,
   LogOut,
+  MoreHorizontal,
+  MoreVertical,
   TriangleAlert,
   User2,
   UserIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { Country, CountryDropdown } from "~/components/ui/country-dropdown";
@@ -38,6 +42,23 @@ import universities from "~/lib/constants/world_universities_and_domains.json";
 import { api } from "~/trpc/react";
 import CreateTeam from "./_components/create-team";
 import JoinTeam from "./_components/join-team";
+import { OrganizationMembership } from "@clerk/nextjs/server";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
 
 export default function EditApplicationForm({
   user,
@@ -52,7 +73,12 @@ export default function EditApplicationForm({
 }) {
   const { user: clerkUser } = useUser();
   const updateUser = api.user.update.useMutation();
+  const renameTeam = api.team.rename.useMutation();
+  const leaveTeam = api.team.leave.useMutation();
+
   const { signOut } = useClerk();
+
+  const dialogRef = useRef<HTMLButtonElement>(null);
 
   const [loading, setLoading] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
@@ -105,38 +131,40 @@ export default function EditApplicationForm({
 
   // Really ugly solution, change if have time
   useEffect(() => {
-    if (!isDirty)
-      setIsDirty(
-        firstName !== user.first_name ||
-          lastName !== user.last_name ||
-          email !== user.university_email ||
-          country?.alpha2 !== user.country ||
-          university?.name !== user.university_name ||
-          universityYear !== user.university_year ||
-          cv !== user.cv_url ||
-          portfolio !== user.portfolio_url ||
-          placements !== user.placements_count ||
-          hackathons !== user.hackathons_count ||
-          project !== (user.project_description ?? undefined) ||
-          needsReimbursement !== (user.needs_reimbursement ?? undefined) ||
-          travel !== (user.travelling_from ?? undefined) ||
-          calendarEmail !== (user.calendar_email ?? undefined),
-      );
-
-    setIsValid(
+    const valid =
       !!firstName &&
-        !!lastName &&
-        !!email &&
-        !!country?.alpha2 &&
-        !!university?.name &&
-        !!universityYear &&
-        !!cv &&
-        !!portfolio &&
-        !!placements &&
-        !!hackathons &&
-        !!needsReimbursement &&
-        !!travel,
-    );
+      !!lastName &&
+      !!email &&
+      !!country?.alpha2 &&
+      !!university?.name &&
+      !!universityYear &&
+      !!cv &&
+      !!portfolio &&
+      !!placements &&
+      !!hackathons &&
+      (needsReimbursement === false || !!travel) &&
+      isUniEmail(email) === true;
+
+    const dirty =
+      firstName !== user.first_name ||
+      lastName !== user.last_name ||
+      email !== user.university_email ||
+      country?.alpha2 !== user.country ||
+      university?.name !== user.university_name ||
+      universityYear !== user.university_year ||
+      cv !== user.cv_url ||
+      portfolio !== user.portfolio_url ||
+      placements !== user.placements_count ||
+      hackathons !== user.hackathons_count ||
+      project !== (user.project_description ?? undefined) ||
+      needsReimbursement !== (user.needs_reimbursement ?? undefined) ||
+      travel !== (user.travelling_from ?? undefined) ||
+      calendarEmail !== (user.calendar_email ?? undefined);
+
+    setIsDirty(dirty);
+    setIsValid(valid);
+
+    if (!dirty && valid && dirtyToast) toast.dismiss(dirtyToast);
   }, [
     firstName,
     lastName,
@@ -183,7 +211,7 @@ export default function EditApplicationForm({
         ),
       );
   }, [isDirty]);
-  
+
   const scrollToSection = (e: React.MouseEvent, sectionId: string) => {
     e.preventDefault();
     const element = document.querySelector(sectionId);
@@ -221,7 +249,7 @@ export default function EditApplicationForm({
       setLoading(true);
 
       await updateUser.mutateAsync({
-        pronouns,
+        // pronouns,
         firstName,
         lastName,
         universityEmail: email,
@@ -250,8 +278,6 @@ export default function EditApplicationForm({
     setLoading(false);
   };
 
-  console.log(user.team);
-
   return (
     <div className="mx-auto flex w-full flex-col gap-3 py-10 lg:flex-row">
       <div className="flex w-full flex-col gap-6 lg:w-1/3">
@@ -272,17 +298,6 @@ export default function EditApplicationForm({
                 {user.first_name} {user.last_name}
               </span>
               <span className="text-sm">{user.email}</span>
-              {/* <Button
-                size={"sm"}
-                variant={"secondary"}
-                className="mt-2 w-max bg-accent-blue text-white hover:bg-accent-blue/80 lg:hidden"
-                asChild
-              >
-                <Link href="#form">
-                  <Edit3 />
-                  Edit profile
-                </Link>
-              </Button> */}
             </span>
 
             <Button
@@ -292,12 +307,143 @@ export default function EditApplicationForm({
               Sign out <LogOut />
             </Button>
           </div>
+          <div className="pt-2 pl-3 font-medium mt-3">
+            Application status: <span className="font-bold">Pending decision</span>
+            <p className="font-sans text-sm pt-1">
+              We'll notify you about our decision by 17th February
+            </p>
+          </div>
         </div>
         <div className="relative h-max w-full overflow-hidden rounded-2xl bg-accent-lilac p-6 text-black">
-          <h2 className="text-2xl font-medium">Team {team?.name}</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-medium">Team {team?.name}</h2>
+            {team && (
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <MoreHorizontal size={20} />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <Dialog>
+                    <DropdownMenuItem
+                      onClick={(e) => {
+                        // prevent closing the dialog when clicking the button
+                        e.preventDefault();
+                        dialogRef?.current?.click();
+                      }}
+                    >
+                      <DialogTrigger ref={dialogRef} asChild>
+                        <div className="hidden"></div>
+                      </DialogTrigger>
+                      <Edit3 />
+                      <span>Rename team</span>
+                    </DropdownMenuItem>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <form
+                        action={(e) => {
+                          try {
+                            const name = e.get("name");
+
+                            if (!name?.toString().length) {
+                              toast.error("Name is required");
+                              return;
+                            }
+
+                            renameTeam.mutate({
+                              team_id: team.id,
+                              name: name.toString(),
+                            });
+
+                            setTeam({ ...team, name: name.toString() });
+                            toast.success("Team renamed to " + name);
+                          } catch (err) {
+                            console.error(err);
+                            toast.error(
+                              "There was something wrong, please try again.",
+                            );
+                          }
+                        }}
+                      >
+                        <DialogHeader>
+                          <DialogTitle>Rename your team</DialogTitle>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                          <div className="flex flex-col gap-2">
+                            <Label htmlFor="name" className="">
+                              Name
+                            </Label>
+                            <Input
+                              id="name"
+                              name="name"
+                              defaultValue={team.name}
+                            />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <DialogClose asChild>
+                            <Button type="submit">Save</Button>
+                          </DialogClose>
+                        </DialogFooter>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                  <DropdownMenuItem
+                    onSelect={async (e) => {
+                      e.preventDefault();
+                      try {
+                        setLoading(true);
+                        await leaveTeam.mutateAsync({
+                          team_id: team.id,
+                        });
+                        toast.success("You have left team " + team.name);
+                        setTeam(undefined);
+                      } catch (err) {
+                        console.error(err);
+                        toast.error(
+                          "There was something wrong, please try again.",
+                        );
+                      }
+                      setLoading(false);
+                    }}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <div className="animate-spin">
+                        <Loader2 />
+                      </div>
+                    ) : (
+                      <LogOut />
+                    )}
+                    <span>Leave team</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
           {!!team && (
             <div>
-              <div className="flex flex-col gap-4 pt-6">
+              <div className="py-3">
+                Team code:{" "}
+                <span className="inline-block rounded bg-muted p-1 px-3 font-mono text-white">
+                  {team.code}
+                </span>
+                <p className="pt-2 font-sans text-sm">
+                  <Info className="inline-block" size={17} /> Your friends can
+                  use this code to join your team.
+                </p>
+              </div>
+              <Label className="flex items-center gap-2">
+                Members{" "}
+                <span className="text-sm">
+                  ({team?.members && `${team.members?.length} /  6`})
+                </span>
+              </Label>
+              {(team?.members?.length ?? 0) < 4 && (
+                <p className="mt-2 rounded-xl bg-accent-red p-3 font-sans text-sm leading-tight text-white">
+                  You need at least 4 members in your team. Otherwise your
+                  application will be dismissed.
+                </p>
+              )}
+              <div className="flex flex-col gap-4 pt-3">
                 {team?.members?.map((m) => (
                   <div key={m.id} className={`flex flex-col`}>
                     <span className="flex items-center gap-3">
@@ -351,7 +497,7 @@ export default function EditApplicationForm({
       <div className="flex w-full flex-1 flex-col gap-6 rounded-2xl bg-black/70 p-6 lg:w-auto">
         <h1 className="text-2xl font-medium">Update your profile</h1>
         <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <Label htmlFor="pronouns">Pronouns</Label>
             <Select
               defaultValue={pronouns}
@@ -372,15 +518,19 @@ export default function EditApplicationForm({
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
           <div className="flex max-w-md flex-1 flex-col gap-2">
             <Label htmlFor="firstName">First Name</Label>
             <Input
               name="firstName"
               id="firstName"
               defaultValue={firstName}
+              data-error={firstName ? undefined : "true"}
               onChange={(e) => setFirstName(e.target.value)}
             />
+            {!firstName && (
+              <p className="font-sans text-sm text-accent-red">Required</p>
+            )}
           </div>
           <div className="flex max-w-md flex-1 flex-col gap-2">
             <Label htmlFor="lastName">Last Name</Label>
@@ -388,13 +538,17 @@ export default function EditApplicationForm({
               name="lastName"
               id="lastName"
               defaultValue={lastName}
+              data-error={lastName ? undefined : "true"}
               onChange={(e) => setLastName(e.target.value)}
             />
+            {!lastName && (
+              <p className="font-sans text-sm text-accent-red">Required</p>
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-6">
           <div className="flex max-w-md flex-1 flex-col gap-2">
-            <Label htmlFor="country">Country</Label>
+            <Label htmlFor="country">University Country</Label>
             <CountryDropdown
               defaultValue={country?.alpha3 ?? "GBR"}
               onChange={(c) => setCountry(c)}
@@ -428,20 +582,17 @@ export default function EditApplicationForm({
                   <SelectItem value="3">3</SelectItem>
                   <SelectItem value="4">4</SelectItem>
                   <SelectItem value="msc">MSc</SelectItem>
-                  <SelectItem value="phd">MSc</SelectItem>
+                  <SelectItem value="phd">PhD</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
-          <div className="flex flex-col max-w-md gap-2">
+          <div className="flex max-w-md flex-col gap-2">
             {!isUniEmail() && (
               <p className="font-sans text-sm">
-                Your email{" "}
-                <b className="font-sans">
-                  ({user?.email})
-                </b>{" "}
-                does not seem to be from the university you selected. Please
-                enter an email ending with{" "}
+                Your email <b className="font-sans">({user?.email})</b> does not
+                seem to be from the university you selected. Please enter an
+                email ending with{" "}
                 {university?.domains?.map((d, i, a) => (
                   <span key={d} className="font-sans font-bold">
                     {d}{" "}
@@ -473,9 +624,7 @@ export default function EditApplicationForm({
                   className="p-1 px-2 text-sm font-normal"
                   type="button"
                   variant={"outline"}
-                  onClick={() =>
-                    setEmail(user?.email)
-                  }
+                  onClick={() => setEmail(user?.email)}
                 >
                   Use {user?.email}
                 </Button>
@@ -568,12 +717,10 @@ export default function EditApplicationForm({
             </Select>
           </div>
         </div>
-        <div className="flex flex-1 flex-col gap-2 max-w-md">
+        <div className="flex max-w-md flex-1 flex-col gap-2">
           <div className="flex flex-1 flex-col gap-6 py-3">
             <Label htmlFor="aim">Tell us about a project you completed</Label>
-            <span className="text-sm">
-              (Optional but highly recommended)
-            </span>
+            <span className="text-sm">(Optional but highly recommended)</span>
             <div className="flex flex-col gap-2">
               <Label htmlFor="aim">Project aim</Label>
               <Textarea
@@ -583,9 +730,8 @@ export default function EditApplicationForm({
                 rows={2}
                 defaultValue={aim}
                 onChange={(e) =>
-                  setProject(`${e.target.value}\n${stack}\n${link}`)
+                  setProject(`${e.target.value}\n${stack ?? ""}\n${link ?? ""}`)
                 }
-                required
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -597,9 +743,8 @@ export default function EditApplicationForm({
                 className="min-h-0 flex-1 resize-none"
                 defaultValue={stack}
                 onChange={(e) =>
-                  setProject(`${aim}\n${e.target.value}\n${link}`)
+                  setProject(`${aim ?? ""}\n${e.target.value}\n${link ?? ""}`)
                 }
-                required
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -611,9 +756,8 @@ export default function EditApplicationForm({
                 defaultValue={link}
                 className="min-h-0 flex-1 resize-none"
                 onChange={(e) =>
-                  setProject(`${aim}\n${stack}\n${e.target.value}`)
+                  setProject(`${aim ?? ""}\n${stack ?? ""}\n${e.target.value}`)
                 }
-                required
               />
             </div>
           </div>
@@ -657,7 +801,14 @@ export default function EditApplicationForm({
                     onChange={(e) => {
                       setTravel(e.target.value);
                     }}
+                    data-error={travel ? undefined : "true"}
+                    required
                   />
+                  {!travel && (
+                    <p className="font-sans text-sm text-accent-red">
+                      Required
+                    </p>
+                  )}
                 </div>
               </TabsContent>
               <TabsContent value="no"></TabsContent>
@@ -720,12 +871,22 @@ export default function EditApplicationForm({
             </Tabs>
           </div>
         </div>
+        {isDirty && !isValid && (
+          <div className="rounded-xl">
+            <div className="flex items-center gap-3">
+              <TriangleAlert size={17} className="text-accent-red" />
+              <span className="flex-1 text-sm font-medium text-accent-red">
+                Please check your answers
+              </span>
+            </div>
+          </div>
+        )}
         <div className="flex w-full" id="save">
           <Button
             className="w-full max-w-md self-end"
             type="button"
             loading={loading}
-            disabled={!isValid || !isUniEmail()}
+            disabled={!isValid || !isDirty}
             onClick={() => handleUpdate()}
           >
             Save

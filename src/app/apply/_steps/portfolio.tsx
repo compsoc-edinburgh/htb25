@@ -61,19 +61,20 @@ export default function PortfolioStep({
   return (
     <form
       onSubmit={handleContinue}
-      className="flex-1 flex h-full flex-col justify-between gap-3"
+      className="flex h-full flex-1 flex-col justify-between gap-3"
     >
       <div className="rounded-xl bg-muted p-4">
-        <h2 className="text-xl font-medium">Your portfolio or LinkedIn profile</h2>
-        <p className="text-sm text-muted-foreground font-sans">
+        <h2 className="text-xl font-medium">
+          Your portfolio or LinkedIn profile
+        </h2>
+        <p className="font-sans text-sm text-muted-foreground">
           Share your portfolio or LinkedIn profile with us.
         </p>
       </div>
-      <div className="flex-1 flex flex-col gap-2">
+      <div className="flex flex-1 flex-col gap-2">
         <Input
           name="portfolio"
           id="portfolio"
-          
           autoFocus
           defaultValue={portfolio}
           onChange={(e) => {
@@ -85,7 +86,12 @@ export default function PortfolioStep({
         <Button onClick={handleBack} variant={"secondary"} type="button">
           Back
         </Button>
-        <Button loading={loading} type="submit" className="flex-1">
+        <Button
+          loading={loading}
+          type="submit"
+          className="flex-1"
+          disabled={loading || !portfolio?.length}
+        >
           Next
         </Button>
       </div>
