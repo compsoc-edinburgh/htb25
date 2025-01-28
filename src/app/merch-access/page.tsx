@@ -23,16 +23,9 @@ const config: ChallengeConfig = {
 export default function ChallengePage() {
   const { userId } = useAuth();
   const router = useRouter();
-  const utils = api.useContext();
-  const { data: userData, isLoading } = api.user.get.useQuery(undefined, {
-    enabled: !!userId
-  });
-
-  const completeMutation = api.user.completeChallenge.useMutation({
-    onSuccess: () => {
-      utils.user.get.invalidate()
-    },
-  })
+  const { isSignedIn, isLoaded } = useUser();
+  const completeMutation = api.user.completeChallenge.useMutation();
+  const { data: challengeCompletion, isLoading: isCheckingCompletion } = api.user.getChallengeCompletion.useQuery();
 
   if (isLoading) {
     return (
@@ -80,7 +73,7 @@ export default function ChallengePage() {
       if (input === config.solution) {
         toast.success("Access Granted! You've successfully bypassed the security system.")
         
-        await completeMutation.mutateAsync();
+        await completeMutation.mutateAsync()
       } else {
         toast.error("Access Denied. Invalid solution. Please try again.")
       }
