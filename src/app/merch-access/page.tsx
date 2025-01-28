@@ -1,12 +1,8 @@
 "use client"
 
-import { Loader2, Terminal as TerminalIcon } from "lucide-react"
+import { Terminal as TerminalIcon } from "lucide-react"
 import { Card } from "~/components/ui/card"
 import { Challenge, TerminalHeader, Terminal } from "~/components/modules/merch-access"
-import { toast } from "sonner"
-import { api } from "~/trpc/react"
-import { useRouter, redirect } from "next/navigation"
-import { useAuth } from "@clerk/nextjs"
 
 interface ChallengeConfig {
   fragments: number[]
@@ -21,92 +17,17 @@ const config: ChallengeConfig = {
 }
 
 export default function ChallengePage() {
-  const { userId } = useAuth();
-  const router = useRouter();
-  const { isSignedIn, isLoaded } = useUser();
-  const completeMutation = api.user.completeChallenge.useMutation();
-  const { data: challengeCompletion, isLoading: isCheckingCompletion } = api.user.getChallengeCompletion.useQuery();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen w-full font-mono text-white">
-        <div className="py-8">
-          <Card className="bg-black/40 p-8 backdrop-blur">
-            <div className="space-y-6 text-center">
-              <Loader2 className="mx-auto h-16 w-16 text-accent-yellow animate-spin" />
-            </div>
-          </Card>
-        </div>
-      </div>
-    )
-  }
-
-  if (!userId) {
-    return (
-      <div className="min-h-screen w-full font-mono text-white">
-        <div className="py-8">
-          <Card className="bg-black/40 p-8 backdrop-blur">
-            <div className="space-y-6 text-center">
-              <TerminalIcon className="mx-auto h-16 w-16 text-accent-yellow" />
-              <h1 className="text-2xl font-bold">Terminal Access Restricted</h1>
-              <p className="text-base text-gray-400">SECURITY PROTOCOL ACTIVE</p>
-              <div className="my-6 font-mono text-base text-red-500">
-                <p>! UNAUTHORIZED ACCESS DETECTED !</p>
-                <p>Authentication required to proceed</p>
-              </div>
-              <button 
-                onClick={() => router.push('/signin')}
-                className="px-6 py-3 text-base bg-accent-yellow text-black rounded-lg hover:bg-accent-yellow/90 transition"
-              >
-                Authenticate Now
-              </button>
-            </div>
-          </Card>
-        </div>
-      </div>
-    )
-  }
-
-  const handleSolutionSubmit = async (userInput: string) => {
+  const handleSolutionSubmit = (userInput: string) => {
     try {
       const input = userInput.trim()
       if (input === config.solution) {
-        toast.success("Access Granted! You've successfully bypassed the security system.")
-        
-        await completeMutation.mutateAsync()
+        console.log("Access granted! You've successfully bypassed the security system.")
       } else {
-        toast.error("Access Denied. Invalid solution. Please try again.")
+        console.log("Access denied")
       }
-    } catch (error) {
-      toast.error("Something went wrong. Please try again.")
+    } catch {
+      console.log("Access denied")
     }
-  }
-
-  if (true) {
-    return (
-      <div className="min-h-screen font-mono text-white">
-        <div className="container py-8">
-          <Card className="bg-black/60 backdrop-blur">
-            <TerminalHeader />
-            <div className="relative p-4">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <TerminalIcon className="h-6 w-6 text-accent-yellow" />
-                  <span className="text-accent-yellow">$ Access Denied</span>
-                </div>
-                <p className="text-gray-300 font-mono">
-                  $ <span className="text-red-500">The code challenge is currently locked.</span><br/>
-                  $ Please check this page regularly for updates.<br/>
-                  $ Contact an organizer if you believe this is an error.<br/>
-                  $ System status: MAINTENANCE MODE<br/>
-                  _
-                </p>
-              </div>
-            </div>
-          </Card>
-        </div>
-      </div>
-    )
   }
 
   return (
