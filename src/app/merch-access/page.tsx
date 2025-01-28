@@ -82,20 +82,26 @@ export default function ChallengePage() {
     }
   }
 
-  if (!userData) {
+  if (true) {
     return (
       <div className="min-h-screen font-mono text-white">
         <div className="container py-8">
-          <Card className="bg-black/40 p-8 backdrop-blur">
-            <div className="space-y-4 text-center">
-              <h1 className="text-xl font-bold">Access Restricted</h1>
-              <p>You need to register to access this challenge.</p>
-              <button 
-                onClick={() => router.push('/register')}
-                className="px-4 py-2 bg-accent-yellow text-black rounded hover:bg-accent-yellow/90 transition"
-              >
-                Register Now
-              </button>
+          <Card className="bg-black/60 backdrop-blur">
+            <TerminalHeader />
+            <div className="relative p-4">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <TerminalIcon className="h-6 w-6 text-accent-yellow" />
+                  <span className="text-accent-yellow">$ Access Denied</span>
+                </div>
+                <p className="text-gray-300 font-mono">
+                  $ <span className="text-red-500">The code challenge is currently locked.</span><br/>
+                  $ Please check this page regularly for updates.<br/>
+                  $ Contact an organizer if you believe this is an error.<br/>
+                  $ System status: MAINTENANCE MODE<br/>
+                  _
+                </p>
+              </div>
             </div>
           </Card>
         </div>
