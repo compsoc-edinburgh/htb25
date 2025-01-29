@@ -2,21 +2,17 @@ import {
   Dispatch,
   FormEvent,
   SetStateAction,
-  useEffect,
   useState,
 } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import { useSearchParamsHelper } from "~/lib/helpers";
 import { api } from "~/trpc/react";
 import { ApplicationStep } from "../application-form";
 import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
-
-import universities from "~/lib/constants/world_universities_and_domains.json";
 import { University } from "~/components/ui/university-dropdown";
-import { Check, CheckCircle } from "lucide-react";
+import { Check } from "lucide-react";
 
 export default function EmailStep({
   email,
@@ -32,10 +28,7 @@ export default function EmailStep({
   const { user } = useUser();
 
   const [loading, setLoading] = useState(false);
-  const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState<string>();
-
-  const [useCustomEmail, setUseCustomEmail] = useState(true);
 
   const { updateSearchParam } = useSearchParamsHelper();
   const updateUser = api.user.update.useMutation();

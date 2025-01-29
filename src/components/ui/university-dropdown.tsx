@@ -20,8 +20,7 @@ import {
 import { cn } from "~/lib/utils";
 
 // assets
-import { ChevronDown, CheckIcon, Globe } from "lucide-react";
-import { CircleFlag } from "react-circle-flags";
+import { ChevronDown, CheckIcon } from "lucide-react";
 
 // data
 import universities from "~/lib/constants/world_universities_and_domains.json";
