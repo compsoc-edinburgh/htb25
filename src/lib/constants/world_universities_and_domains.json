@@ -67281,7 +67281,7 @@
     "name": "University of Lancaster",
     "alpha_two_code": "GB",
     "state-province": null,
-    "domains": ["lancs.ac.uk"],
+    "domains": ["lancs.ac.uk", "lancaster.ac.uk"],
     "country": "United Kingdom"
   },
   {
