@@ -22,7 +22,7 @@ const config: ChallengeConfig = {
 
 export default function ChallengePage() {
   const router = useRouter();
-  const { isSignedIn, isLoaded, user } = useUser();
+  const { isSignedIn, isLoaded } = useUser();
   const { data: challengeCompletion, isLoading: isCheckingCompletion } = api.user.getChallengeCompletion.useQuery();
   const utils = api.useUtils();
   const completeMutation = api.user.completeChallenge.useMutation({
@@ -95,13 +95,18 @@ export default function ChallengePage() {
     try {
       const input = userInput.trim()
       
-      await completeMutation.mutateAsync({ 
+      const result = await completeMutation.mutateAsync({ 
         solution: input,
       });
-      
-      toast.success("Access Granted! You've successfully bypassed the security system.")
+
+      if (!result.success) {
+        toast.error(result.message)
+        return;
+      } 
+
+      toast.success(result.message)
     } catch (error) {
-      toast.error("Access Denied. Invalid solution. Please try again.")
+      toast.error("Access Denied. Unexpected error.")
     }
   }
 
@@ -123,6 +128,12 @@ export default function ChallengePage() {
                 <pre className="text-xs sm:text-sm rounded-lg bg-black/60 p-3 sm:p-4">
                   <p className="whitespace-pre-wrap">Fragments: {config.fragments.join(', ')}</p>
                   <p className="whitespace-pre-wrap">Modulus: {config.modulus}</p>
+                </pre>
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-sm sm:text-base text-accent-yellow">Output example:</h3>
+                <pre className="text-xs sm:text-sm rounded-lg bg-black/60 p-3 sm:p-4">
+                  <p className="whitespace-pre-wrap">hack_the_burgh_xi:10_1234567890</p>
                 </pre>
               </div>
             </div>
