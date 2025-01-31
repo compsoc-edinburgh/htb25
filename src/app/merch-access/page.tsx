@@ -7,6 +7,7 @@ import { toast } from "sonner"
 import { api } from "~/trpc/react"
 import { useRouter } from "next/navigation"
 import { useUser } from "@clerk/nextjs"
+import FEATURE_FLAGS from "~/lib/feature-flags"
 
 interface ChallengeConfig {
   fragments: number[]
@@ -22,9 +23,10 @@ const config: ChallengeConfig = {
 
 export default function ChallengePage() {
   const router = useRouter();
-  const { isSignedIn, isLoaded } = useUser();
+  const { isSignedIn, isLoaded, user } = useUser();
   const { data: challengeCompletion, isLoading: isCheckingCompletion } = api.user.getChallengeCompletion.useQuery();
   const utils = api.useUtils();
+  const isMerchAccessEnabled = FEATURE_FLAGS.isEnabled("merch-access", { userId: user?.id });
   const completeMutation = api.user.completeChallenge.useMutation({
     onSuccess: () => {
       void utils.user.getChallengeCompletion.invalidate();
@@ -84,6 +86,22 @@ export default function ChallengePage() {
                 <p>Access request sent to terminal system</p>
                 <p>Please wait for confirmation</p>
               </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
+  if (!isMerchAccessEnabled) {
+    return (
+      <div className="min-h-[calc(100vh-5rem)] w-full px-4 sm:px-6 font-mono text-white">
+        <div className="py-4 sm:py-8">
+          <Card className="bg-black/40 p-4 sm:p-8 backdrop-blur">
+            <div className="space-y-4 sm:space-y-6 text-center">
+              <TerminalIcon className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-accent-yellow" />
+              <h1 className="text-xl sm:text-2xl font-bold">Terminal Access Restricted</h1>
+              <p className="text-sm sm:text-base text-gray-400">SECURITY PROTOCOL ACTIVE</p>
             </div>
           </Card>
         </div>
