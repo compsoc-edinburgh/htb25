@@ -26,6 +26,7 @@ export default function ChallengePage() {
   const { isSignedIn, isLoaded, user } = useUser();
   const { data: challengeCompletion, isLoading: isCheckingCompletion } = api.user.getChallengeCompletion.useQuery();
   const utils = api.useUtils();
+  const isMerchAccessEnabled = FEATURE_FLAGS.isEnabled("merch-access", { userId: user?.id });
   const completeMutation = api.user.completeChallenge.useMutation({
     onSuccess: () => {
       void utils.user.getChallengeCompletion.invalidate();
@@ -92,7 +93,7 @@ export default function ChallengePage() {
     )
   }
 
-    if (!FEATURE_FLAGS.isEnabled("merch-access", { userId: user?.id })) {
+  if (!isMerchAccessEnabled) {
     return (
       <div className="min-h-[calc(100vh-5rem)] w-full px-4 sm:px-6 font-mono text-white">
         <div className="py-4 sm:py-8">
