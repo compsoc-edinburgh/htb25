@@ -4,7 +4,7 @@ type Flags = "merch-access";
 
 const FEATURE_FLAGS = new FeatureFlags<Flags>({
   "merch-access": {
-    defaultValue: true,
+    defaultValue: false,
     context: {
       percentage: 35,
     },
