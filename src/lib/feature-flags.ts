@@ -5,9 +5,6 @@ type Flags = "merch-access";
 const FEATURE_FLAGS = new FeatureFlags<Flags>({
   "merch-access": {
     defaultValue: false,
-    conditions: {
-      environment: "production",
-    },
     rollout: {
       percentage: 35,
     },
