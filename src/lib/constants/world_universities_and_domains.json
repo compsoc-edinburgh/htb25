@@ -55360,7 +55360,7 @@
     "name": "Technical University of Lodz",
     "alpha_two_code": "PL",
     "state-province": null,
-    "domains": ["p.lodz.pl"],
+    "domains": ["edu.p.lodz.pl"],
     "country": "Poland"
   },
   {
@@ -56808,7 +56808,7 @@
     "name": "Babes-Bolyai University of Cluj-Napoca",
     "alpha_two_code": "RO",
     "state-province": null,
-    "domains": ["ubbcluj.ro"],
+    "domains": ["stud.ubbcluj.ro"],
     "country": "Romania"
   },
   {

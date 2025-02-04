@@ -146,6 +146,18 @@ export default function EmailStep({
               </Button>
             </div>
           )}
+          <div className="rounded-lg border border-blue-400/20 bg-blue-100/10 backdrop-blur-sm p-3 mt-5 text-sm text-blue-100 shadow-lg">
+            <p>
+              Having trouble with your university email domain? Contact us at{" "}
+              <a 
+                href="mailto:hello@hacktheburgh.com" 
+                className="font-medium underline hover:text-blue-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:ring-offset-1 focus:ring-offset-transparent"
+              >
+                hello@hacktheburgh.com
+              </a>
+              {" "}and we'll help sort it out.
+            </p>
+          </div>
         </div>
       </div>
       <div className="flex w-full gap-3">
