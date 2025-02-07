@@ -7,9 +7,11 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
+const CHALLENGE_ONE_SOLUTION = process.env.CHALLENGE_ANSWER;
+
 export const userRouter = createTRPCRouter({
   get: protectedProcedure.query(async ({ ctx }) => {
-    console.log("in trpc", ctx.auth.userId); 
+    console.log("in trpc", ctx.auth.userId);
     return ctx.db.user.findUnique({
       where: { id: ctx.auth.userId },
       include: {
@@ -50,8 +52,8 @@ export const userRouter = createTRPCRouter({
         include: {
           team: {
             include: {
-              members: true
-            }
+              members: true,
+            },
           },
         },
       });
@@ -88,7 +90,7 @@ export const userRouter = createTRPCRouter({
         });
       }
 
-      console.log(input.pronouns)
+      console.log(input.pronouns);
 
       const metadata = {
         pronouns: input.pronouns,
@@ -104,7 +106,7 @@ export const userRouter = createTRPCRouter({
         needs_reimbursement: input.needsReimbursement,
         travelling_from: input.travellingFrom,
         dietary_restrictions: input.dietaryRestrictions,
-        calendar_email: input.calendarEmail
+        calendar_email: input.calendarEmail,
       };
 
       // Save other information in clerk metadata
@@ -121,4 +123,49 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
+  completeChallenge: protectedProcedure
+    .input(
+      z.object({
+        solution: z.string().trim(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existing = await ctx.db.challengeCompletion.findUnique({
+        where: {
+          userId: ctx.auth.userId,
+        },
+      });
+
+      if (existing) {
+        return {
+          success: true,
+          message: "Challenge already completed",
+        };
+      }
+
+      if (input.solution !== process.env.CHALLENGE_ANSWER) {
+        return {
+          success: false,
+          message: "Invalid solution",
+        };
+      }
+
+      await ctx.db.challengeCompletion.create({
+        data: {
+          userId: ctx.auth.userId,
+        },
+      });
+
+      return {
+        success: true,
+        message: "Challenge completed successfully",
+      };
+    }),
+  getChallengeCompletion: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.db.challengeCompletion.findUnique({
+      where: {
+        userId: ctx.auth.userId,
+      },
+    });
+  }),
 });

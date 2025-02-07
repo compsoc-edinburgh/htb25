@@ -40,6 +40,8 @@ model User {
   created_by String?
   updated_at DateTime @updatedAt
   updated_by String?
+
+  challengeCompletions ChallengeCompletion[]
 }
 
 model Team {
@@ -82,4 +84,13 @@ model MailingList {
   email      String   @unique
   token      String   @default(uuid()) @unique
   created_at DateTime @default(now())
+}
+
+model ChallengeCompletion {
+    id        String   @id @default(cuid())
+    userId    String
+    createdAt DateTime @default(now())
+    user      User     @relation(fields: [userId], references: [id])
+
+    @@unique([userId])
 }

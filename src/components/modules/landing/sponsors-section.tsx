@@ -15,7 +15,7 @@ const SPONSOR_DATA: Sponsor[] = [
     logo: "/sponsors/g-research.png", 
     website: "https://www.gresearch.co.uk/",
     tier: "platinum",
-    isReleased: false,
+    isReleased: true,
   },
   {
     name: "Optiver",
