@@ -67089,7 +67089,7 @@
     "name": "University of Exeter",
     "alpha_two_code": "GB",
     "state-province": null,
-    "domains": ["ex.ac.uk"],
+    "domains": ["ex.ac.uk", "exeter.ac.uk"],
     "country": "United Kingdom"
   },
   {
