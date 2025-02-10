@@ -7,6 +7,16 @@ import Link from "next/link";
 
 export default async function ApplyPage() {
   const clerkUser = await currentUser();
+  const date = new Date();
+
+  if (
+    (date.getUTCFullYear() == 2025 &&
+      (date.getUTCMonth() > 1 ||
+        (date.getUTCMonth() == 1 && date.getUTCDate() > 10))) ||
+    date.getUTCFullYear() > 2025
+  ) {
+    redirect("/applications-closed");
+  }
 
   if (!clerkUser?.id) {
     redirect("/signup");
@@ -17,8 +27,6 @@ export default async function ApplyPage() {
   // Had to do this here so that we don't have to deal with webhooks,
   // had a problem with saving the user in the db after social signin
   var user = await api.user.get();
-
-  console.log(user);
 
   if (!user) {
     user = await api.user.create({
@@ -32,7 +40,7 @@ export default async function ApplyPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-screen-md flex-col justify-center px-2 pt-20 pb-6 md:h-screen md:min-h-full md:pt-6">
+    <div className="mx-auto flex min-h-screen w-full max-w-screen-md flex-col justify-center px-2 pb-6 pt-20 md:h-screen md:min-h-full md:pt-6">
       <Link href={"/"}>
         <img
           src="/HB-icon-neon-small.png"
@@ -41,7 +49,7 @@ export default async function ApplyPage() {
       </Link>
       <Link
         href={"/"}
-        className="absolute md:hidden left-0 top-0 z-50 flex h-20 w-full items-center justify-center"
+        className="absolute left-0 top-0 z-50 flex h-20 w-full items-center justify-center md:hidden"
       >
         <img
           src="/HTB-logo.png"
