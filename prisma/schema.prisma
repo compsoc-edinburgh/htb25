@@ -32,11 +32,11 @@ model User {
   // Onboarding
   dietary_restrictions String?
   pronouns             String?
-  shirt_size           String?
-  food_choice_1        String? 
-  food_choice_2        String?
-  pizza_choice         String?
-  food_choice_3        String?
+  // shirt_size           String?
+  // food_choice_1        String? 
+  // food_choice_2        String?
+  // pizza_choice         String?
+  // food_choice_3        String?
 
   team_id String?
   team    Team?   @relation(fields: [team_id], references: [id])
