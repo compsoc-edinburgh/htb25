@@ -32,6 +32,7 @@ model User {
   // Onboarding
   dietary_restrictions String?
   pronouns             String?
+
   // shirt_size           String?
   // food_choice_1        String? 
   // food_choice_2        String?
