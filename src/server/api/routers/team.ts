@@ -64,7 +64,12 @@ export const teamRouter = createTRPCRouter({
           },
 
           include: {
-            members: true,
+            members: {
+              select: {
+                first_name: true,
+                last_name: true,
+              }
+            },
           },
         });
       } catch (err) {
@@ -112,7 +117,12 @@ export const teamRouter = createTRPCRouter({
         },
 
         include: {
-          members: true,
+          members: {
+            select: {
+              first_name: true,
+              last_name: true,
+            }
+          },
         },
       });;
     }),

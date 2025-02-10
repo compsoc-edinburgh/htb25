@@ -165,7 +165,12 @@ export const applicationRouter = createTRPCRouter({
       include: {
         team: {
           include: {
-            members: true,
+            members: {
+              select: {
+                first_name: true,
+                last_name: true,
+              }
+            },
           },
         },
       },

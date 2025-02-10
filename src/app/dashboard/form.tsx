@@ -66,7 +66,7 @@ export default function EditApplicationForm({
   user: User & {
     team:
       | (Team & {
-          members?: User[];
+          members?: Partial<User>[];
         })
       | null;
   };
@@ -103,7 +103,7 @@ export default function EditApplicationForm({
   );
   const [team, setTeam] = useState<
     | (Team & {
-        members?: User[];
+        members?: Partial<User>[];
       })
     | undefined
   >(user.team ?? undefined);

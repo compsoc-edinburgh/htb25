@@ -26,7 +26,7 @@ export default function CreateTeam({
   setTeam: Dispatch<
     SetStateAction<
       | (Team & {
-          members?: User[];
+          members?: Partial<User>[];
         })
       | undefined
     >

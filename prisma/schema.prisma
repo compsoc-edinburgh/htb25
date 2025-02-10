@@ -28,8 +28,9 @@ model User {
   project_description  String?
   needs_reimbursement  Boolean?
   travelling_from      String?
-  dietary_restrictions String?
   calendar_email       String?
+  
+  dietary_restrictions String?
 
   team_id String?
   team    Team?   @relation(fields: [team_id], references: [id])
