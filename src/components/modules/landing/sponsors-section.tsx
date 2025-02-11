@@ -22,7 +22,7 @@ const SPONSOR_DATA: Sponsor[] = [
     logo: "/sponsors/optiver.svg",
     website: "https://www.optiver.com/",
     tier: "gold", 
-    isReleased: false,
+    isReleased: true,
   },
   {
     name: "QRT",
