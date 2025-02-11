@@ -142,16 +142,17 @@ export default function Navbar({
                 </Link>
               </Button>
             ) : (
-              <Button
-                asChild
-                className={`h-full rounded-md bg-accent-yellow px-5 py-2 text-black hover:bg-accent-yellow/90 ${
-                  mobile ? "w-full" : ""
-                }`}
-              >
-                <Link href="/apply" className={mobile ? "text-white" : ""}>
-                  Apply
-                </Link>
-              </Button>
+              // <Button
+              //   asChild
+              //   className={`h-full rounded-md bg-accent-yellow px-5 py-2 text-black hover:bg-accent-yellow/90 ${
+              //     mobile ? "w-full" : ""
+              //   }`}
+              // >
+              //   <Link href="/apply" className={mobile ? "text-white" : ""}>
+              //     Apply
+              //   </Link>
+              // </Button>
+             <></>
             )}
             {isAdmin && (
               <Button
@@ -183,14 +184,14 @@ export default function Navbar({
           animate={mobile ? { opacity: 1, x: 0 } : {}}
           transition={{ delay: mobile ? navLinks.length * 0.1 : 0, bounce: 0 }}
         >
-          <Button
+          {/* <Button
             asChild
             className={`h-full rounded-md bg-accent-yellow px-5 py-2 text-black hover:bg-accent-yellow/90 ${
               mobile ? "w-full" : ""
             }`}
           >
             <Link href="/signup">Register</Link>
-          </Button>
+          </Button> */}
         </motion.div>
         <motion.div
           initial={mobile ? { opacity: 0, x: -20 } : {}}

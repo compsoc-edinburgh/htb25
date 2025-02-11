@@ -21,7 +21,7 @@ export const userRouter = createTRPCRouter({
               select: {
                 first_name: true,
                 last_name: true,
-              }
+              },
             },
           },
         },
@@ -61,7 +61,7 @@ export const userRouter = createTRPCRouter({
                 select: {
                   first_name: true,
                   last_name: true,
-                }
+                },
               },
             },
           },
@@ -71,7 +71,6 @@ export const userRouter = createTRPCRouter({
   update: protectedProcedure
     .input(
       z.object({
-        pronouns: z.string().optional(),
         firstName: z.string().optional(),
         lastName: z.string().optional(),
         universityEmail: z.string().email().optional(),
@@ -84,9 +83,16 @@ export const userRouter = createTRPCRouter({
         projectDescription: z.string().optional(),
         needsReimbursement: z.boolean().optional(),
         travellingFrom: z.string().optional(),
-        dietaryRestrictions: z.string().optional(),
         portfolioUrl: z.string().optional(),
         calendarEmail: z.string().optional(),
+
+        pronouns: z.string().optional(),
+        dietaryRestrictions: z.string().optional(),
+        shirtSize: z.string().optional(),
+        meal1: z.string().optional(),
+        meal2: z.string().optional(),
+        meal3: z.string().optional(),
+        pizza: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -103,7 +109,6 @@ export const userRouter = createTRPCRouter({
       console.log(input.pronouns);
 
       const metadata = {
-        pronouns: input.pronouns,
         country: input.country,
         university_name: input.university,
         university_year: input.universityYear,
@@ -115,8 +120,15 @@ export const userRouter = createTRPCRouter({
         project_description: input.projectDescription,
         needs_reimbursement: input.needsReimbursement,
         travelling_from: input.travellingFrom,
-        dietary_restrictions: input.dietaryRestrictions,
         calendar_email: input.calendarEmail,
+
+        pronouns: input.pronouns,
+        dietary_restrictions: input.dietaryRestrictions,
+        shirt_size: input.shirtSize,
+        food_choice_1: input.meal1,
+        food_choice_2: input.meal2,
+        food_choice_3: input.meal3,
+        pizza_choice: input.pizza,
       };
 
       // Save other information in clerk metadata

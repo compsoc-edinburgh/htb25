@@ -281,6 +281,17 @@ export default function EditApplicationForm({
   return (
     <div className="mx-auto flex w-full flex-col gap-3 py-10 lg:flex-row">
       <div className="flex w-full flex-col gap-6 lg:w-1/3">
+        <div className="flex w-full flex-col items-center justify-between gap-3 rounded-xl bg-accent-red px-4 py-3 text-white">
+          <span className="flex-1 text-sm font-medium">
+            <span>
+              <span className="text-lg">Applications are closed</span>
+              <span className="block pt-2 font-sans text-sm">
+                You can no longer update your application. Feel free to contact
+                us at hello@hacktheburgh.com if you have any concerns.
+              </span>
+            </span>
+          </span>
+        </div>
         <div className="w-full rounded-2xl bg-accent-yellow p-3 py-6 text-black">
           <div className="flex items-center justify-between gap-3">
             {clerkUser?.hasImage ? (
@@ -307,9 +318,10 @@ export default function EditApplicationForm({
               Sign out <LogOut />
             </Button>
           </div>
-          <div className="pt-2 pl-3 font-medium mt-3">
-            Application status: <span className="font-bold">Pending decision</span>
-            <p className="font-sans text-sm pt-1">
+          <div className="mt-3 pl-3 pt-2 font-medium">
+            Application status:{" "}
+            <span className="font-bold">Pending decision</span>
+            <p className="pt-1 font-sans text-sm">
               We'll notify you about our decision by 17th February
             </p>
           </div>
@@ -325,13 +337,14 @@ export default function EditApplicationForm({
                 <DropdownMenuContent className="w-56">
                   <Dialog>
                     <DropdownMenuItem
+                    disabled
                       onClick={(e) => {
                         // prevent closing the dialog when clicking the button
                         e.preventDefault();
                         dialogRef?.current?.click();
                       }}
                     >
-                      <DialogTrigger ref={dialogRef} asChild>
+                      <DialogTrigger disabled ref={dialogRef} asChild>
                         <div className="hidden"></div>
                       </DialogTrigger>
                       <Edit3 />
@@ -404,7 +417,7 @@ export default function EditApplicationForm({
                       }
                       setLoading(false);
                     }}
-                    disabled={loading}
+                    disabled
                   >
                     {loading ? (
                       <div className="animate-spin">
@@ -445,7 +458,7 @@ export default function EditApplicationForm({
               )}
               <div className="flex flex-col gap-4 pt-3">
                 {team?.members?.map((m) => (
-                  <div key={m.id} className={`flex flex-col`}>
+                  <div key={m.id ?? m.first_name! + m.last_name!} className={`flex flex-col`}>
                     <span className="flex items-center gap-3">
                       <User2 size={18} />
                       <span>
@@ -468,10 +481,10 @@ export default function EditApplicationForm({
               You are not part of a team
               <Tabs className="w-full py-3">
                 <TabsList className="grid w-full grid-cols-2 gap-3">
-                  <TabsTrigger disabled={joined} value="create">
+                  <TabsTrigger disabled value="create">
                     Create a team
                   </TabsTrigger>
-                  <TabsTrigger disabled={joined} value="join">
+                  <TabsTrigger disabled value="join">
                     Join a team
                   </TabsTrigger>
                 </TabsList>
@@ -495,7 +508,7 @@ export default function EditApplicationForm({
         </div>
       </div>
       <div className="flex w-full flex-1 flex-col gap-6 rounded-2xl bg-black/70 p-6 lg:w-auto">
-        <h1 className="text-2xl font-medium">Update your profile</h1>
+        {/* <h1 className="text-2xl font-medium">Update your profile</h1> */}
         <div className="flex flex-col gap-6">
           {/* <div className="flex flex-col gap-2">
             <Label htmlFor="pronouns">Pronouns</Label>
@@ -522,6 +535,7 @@ export default function EditApplicationForm({
           <div className="flex max-w-md flex-1 flex-col gap-2">
             <Label htmlFor="firstName">First Name</Label>
             <Input
+              disabled
               name="firstName"
               id="firstName"
               defaultValue={firstName}
@@ -535,6 +549,7 @@ export default function EditApplicationForm({
           <div className="flex max-w-md flex-1 flex-col gap-2">
             <Label htmlFor="lastName">Last Name</Label>
             <Input
+              disabled
               name="lastName"
               id="lastName"
               defaultValue={lastName}
@@ -550,6 +565,7 @@ export default function EditApplicationForm({
           <div className="flex max-w-md flex-1 flex-col gap-2">
             <Label htmlFor="country">University Country</Label>
             <CountryDropdown
+              disabled
               defaultValue={country?.alpha3 ?? "GBR"}
               onChange={(c) => setCountry(c)}
             />
@@ -557,6 +573,7 @@ export default function EditApplicationForm({
           <div className="flex max-w-md flex-1 flex-col gap-2">
             <Label htmlFor="university">University</Label>
             <UniversityDropdown
+              disabled
               options={universities.filter(
                 (u) => u.alpha_two_code == country?.alpha2,
               )}
@@ -569,6 +586,7 @@ export default function EditApplicationForm({
           <div className="flex max-w-md flex-1 flex-col gap-2">
             <Label htmlFor="universityYear">University Year</Label>
             <Select
+              disabled
               defaultValue={universityYear}
               onValueChange={(v) => setUniversityYear(v)}
             >
@@ -603,6 +621,7 @@ export default function EditApplicationForm({
             )}
             <div className="relative">
               <Input
+                disabled
                 name="email"
                 id="email"
                 className={isUniEmail() ? "pl-9" : ""}
@@ -643,18 +662,19 @@ export default function EditApplicationForm({
                       View uploaded CV <ExternalLink />
                     </a>
                   </Button>
-                  <Button
+                  {/* <Button
                     type="button"
                     variant={"secondary"}
                     onClick={() => setCv(undefined)}
                   >
                     Change
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             ) : (
               <div>
                 <UploadButton
+                  disabled
                   className="ut-button:mx-0 ut-button:rounded-xl ut-button:bg-primary ut-button:text-black ut-button:transition-colors ut-button:after:bg-primary ut-button:focus-within:ring-2 ut-button:focus-within:ring-ring hover:ut-button:bg-primary/90 ut-button:focus-visible:outline-none ut-button:focus-visible:ring-2 focus-visible:ut-button:ring-ring ut-button:focus-visible:ring-offset-2 ut-button:ut-uploading:bg-accent-foreground/30"
                   endpoint="pdfUploader"
                   onClientUploadComplete={handleUploadComplete}
@@ -666,6 +686,7 @@ export default function EditApplicationForm({
           <div className="flex max-w-md flex-1 flex-col gap-2">
             <Label htmlFor="portfolio">Portfolio/LinkedIn link</Label>
             <Input
+              disabled
               name="portfolio"
               id="portfolio"
               defaultValue={portfolio}
@@ -679,6 +700,7 @@ export default function EditApplicationForm({
               Work experience (placements/internships)
             </Label>
             <Select
+              disabled
               defaultValue={placements}
               onValueChange={(v) => setPlacements(v)}
             >
@@ -699,6 +721,7 @@ export default function EditApplicationForm({
           <div className="flex max-w-md flex-1 flex-col gap-2">
             <Label htmlFor="hackathons">Hackathons attended</Label>
             <Select
+              disabled
               defaultValue={hackathons}
               onValueChange={(v) => setHackathons(v)}
             >
@@ -724,6 +747,7 @@ export default function EditApplicationForm({
             <div className="flex flex-col gap-2">
               <Label htmlFor="aim">Project aim</Label>
               <Textarea
+                disabled
                 name="aim"
                 id="aim"
                 className="min-h-0 flex-1 resize-none"
@@ -737,6 +761,7 @@ export default function EditApplicationForm({
             <div className="flex flex-col gap-2">
               <Label htmlFor="stack">Tech stack</Label>
               <Textarea
+                disabled
                 name="stack"
                 id="stack"
                 rows={2}
@@ -750,6 +775,7 @@ export default function EditApplicationForm({
             <div className="flex flex-col gap-2">
               <Label htmlFor="link">Link to project</Label>
               <Textarea
+                disabled
                 rows={2}
                 name="link"
                 id="link"
@@ -773,6 +799,7 @@ export default function EditApplicationForm({
             >
               <TabsList className="w-full">
                 <TabsTrigger
+                  disabled
                   className="flex-1"
                   value="yes"
                   onClick={() => setNeedsReimbursement(true)}
@@ -780,6 +807,7 @@ export default function EditApplicationForm({
                   Yes
                 </TabsTrigger>
                 <TabsTrigger
+                  disabled
                   className="flex-1"
                   value="no"
                   onClick={() => setNeedsReimbursement(false)}
@@ -822,10 +850,11 @@ export default function EditApplicationForm({
             </Label>
             <Tabs className="max-w-md" defaultValue={"yes"}>
               <TabsList className="w-full">
-                <TabsTrigger className="flex-1" value="yes">
+                <TabsTrigger className="flex-1" value="yes" disabled>
                   Yes
                 </TabsTrigger>
                 <TabsTrigger
+                  disabled
                   className="flex-1"
                   value="no"
                   onClick={() => {
@@ -842,6 +871,7 @@ export default function EditApplicationForm({
                   <div className="flex flex-wrap gap-2">
                     <Button
                       size={"sm"}
+                      disabled
                       type="button"
                       variant={"secondary"}
                       onClick={() => setCalendarEmail(user?.email?.toString())}
@@ -850,6 +880,7 @@ export default function EditApplicationForm({
                     </Button>
                     <Button
                       size={"sm"}
+                      disabled
                       variant={"secondary"}
                       type="button"
                       onClick={() => setCalendarEmail(email)}
@@ -858,6 +889,7 @@ export default function EditApplicationForm({
                     </Button>
                   </div>
                   <Input
+                    disabled
                     name="travel"
                     id="travel"
                     value={calendarEmail}
