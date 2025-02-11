@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { OnboardingStep } from "../onboarding-form";
+import { Input } from "~/components/ui/input";
 
 const items = [
   {
@@ -31,10 +32,6 @@ const items = [
   {
     id: "peanut",
     label: "Peanut allergy",
-  },
-  {
-    id: "other",
-    label: "Other (please specify by email)",
   },
 ];
 
@@ -115,6 +112,59 @@ export default function DietStep({
             </Label>
           ))}
           <Label
+            htmlFor={"other"}
+            className="flex items-center gap-2 rounded-xl p-3 py-1 pr-1 transition-colors hover:bg-muted [&:has(:checked)]:bg-muted"
+          >
+            <Checkbox
+              id={"other"}
+              checked={dietaryRestrictions?.some((d) => d.startsWith("other:"))}
+              onCheckedChange={(checked) => {
+                let dr = dietaryRestrictions.filter((i) => i !== "none");
+
+                if (checked) dr = [...dr, "other:"];
+                else dr = dr.filter((i) => !i.startsWith("other:"));
+
+                setDietaryRestrictions(dr);
+                setDiet(dr.join(","));
+              }}
+            />
+            Other
+            <Input
+              placeholder="Specify"
+              defaultValue={
+                dietaryRestrictions
+                  .find((d) => d.startsWith("other:"))
+                  ?.split(":")[1]
+              }
+              disabled={
+                !dietaryRestrictions.some((d) => d.startsWith("other:"))
+              }
+              className="h-8 w-full"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.code === "Comma") {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }
+              }}
+              onChange={(e) => {
+                let other = dietaryRestrictions.find((d) =>
+                  d.startsWith("other:"),
+                );
+                if (!other) return;
+
+                other = `other:${e.target.value}`;
+
+                let dr = dietaryRestrictions.filter(
+                  (d) => !d.startsWith("other:"),
+                );
+                dr.push(other);
+
+                setDietaryRestrictions(dr);
+                setDiet(dr.join(","));
+              }}
+            />
+          </Label>
+          <Label
             htmlFor="none"
             className="flex items-center gap-2 rounded-xl p-3 transition-colors hover:bg-muted [&:has(:checked)]:bg-muted"
           >
@@ -136,8 +186,11 @@ export default function DietStep({
         </div>
       </div>
       <p className="my-3 text-center font-sans text-xs">
-        If you have any other dietary restrictions, please email us at{" "}
-        <a href="mailto:logistics@hacktheburgh.com" className="font-sans underline">
+        If you have any questions or concerns, please email us at{" "}
+        <a
+          href="mailto:logistics@hacktheburgh.com"
+          className="font-sans underline"
+        >
           logistics@hacktheburgh.com
         </a>
       </p>
