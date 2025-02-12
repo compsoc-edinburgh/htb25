@@ -2,13 +2,7 @@
 
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import Link from "next/link";
@@ -42,8 +36,6 @@ export function LoginForm({
 
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-
-    console.log(email, password);
 
     try {
       const signInAttempt = await signIn.create({
@@ -99,14 +91,14 @@ export function LoginForm({
                   />
                 </div>
                 <div className="grid gap-2">
-                  <div className="flex items-center">
+                  <div className="flex items-center justify-between">
                     <Label htmlFor="password">Password</Label>
-                    {/* <a
-                      href="#"
-                      className="ml-auto text-sm underline-offset-4 hover:underline"
+                    <Link
+                      href="/forgot-password"
+                      className="text-sm text-muted-foreground underline-offset-4 hover:underline"
                     >
                       Forgot your password?
-                    </a> */}
+                    </Link>
                   </div>
                   <Input
                     id="password"
