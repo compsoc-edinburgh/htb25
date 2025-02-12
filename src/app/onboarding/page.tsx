@@ -13,7 +13,6 @@ export default async function ApplyPage() {
   }
   const user = await api.user.get();
 
-
   if (!clerkUser?.id || !user) {
     redirect("/signin");
   }
@@ -87,7 +86,78 @@ export default async function ApplyPage() {
             className="object-fit mx-auto block h-12 md:hidden"
           />
         </Link>
-        <OnboardingForm user={user} />
+
+        <div className="mx-auto flex max-w-screen-sm flex-col gap-4">
+          <h1 className="text-4xl font-bold text-primary">
+            Congratulations! 🎉
+          </h1>
+
+          <div className="rounded-lg border border-primary/20 bg-primary/5 p-6">
+            <p className="mb-4">Hey,</p>
+            <p className="mb-4">
+              Great news! We're thrilled to inform you that your application to
+              HackTheBurgh has been accepted! Congratulations on being selected
+              to join us for an amazing weekend of innovation, learning, and
+              fun.
+            </p>
+
+            <div className="my-6 rounded-md bg-primary/10 p-4">
+              <h2 className="mb-4 text-xl font-semibold">Key Details:</h2>
+              <ul className="flex flex-col gap-2">
+                <li>
+                  📅 <strong>Date:</strong> 1st-2nd March
+                </li>
+                <li>
+                  📍 <strong>Location:</strong> The Nucleus Building, The
+                  University of Edinburgh King's Buildings Campus, Thomas Bayes
+                  Rd, Edinburgh EH9 3FG
+                </li>
+                <li>
+                  ⏰ <strong>Check-in Time:</strong> 9 am
+                </li>
+              </ul>
+            </div>
+
+            <h2 className="mb-2 text-xl font-semibold">What's Next?</h2>
+            <p className="mb-4">
+              Please confirm your attendance by filling out the form below by
+              the 14th Feb!
+            </p>
+
+            <h2 className="mb-2 text-xl font-semibold">Important Notes:</h2>
+            <ul className="mb-4 flex flex-col gap-2">
+              <li>
+                • If you cannot attend, please let us know as soon as possible
+              </li>
+              <li>• Don't forget to bring your laptop and charger!</li>
+              <li>
+                • We'll provide meals, snacks, and plenty of coffee throughout
+                the event
+              </li>
+              <li>
+                • More detailed information about schedules and workshops will
+                be sent in the coming weeks
+              </li>
+            </ul>
+
+            <p className="mb-4">
+              We can't wait to see what you'll create at HackTheBurgh! If you
+              have any questions in the meantime, don't hesitate to reach out.
+            </p>
+
+            <p>
+              Best regards,
+              <br />
+              The HackTheBurgh Team
+            </p>
+          </div>
+        </div>
+
+        {/* We need a continue button here to show the onboarding form!!!!!! */}
+
+        {/* <div id="onboarding-form" className="mt-12">
+          <OnboardingForm user={user} />
+        </div> */}
       </div>
     );
   }

@@ -65,6 +65,7 @@ export default function OnboardingForm({
 
   return (
     <div className="relative m-auto flex h-screen max-h-full w-full max-w-md flex-1 flex-col gap-3 rounded-xl bg-black/70 p-6 md:aspect-[9/16]">
+      <p className="text-center text-2xl font-bold">Congratulations,  {user.first_name}!</p>
       <OnboardingHeader currentStep={step} />
       <section className="flex flex-1 flex-col">
         {step === "pronouns" && (
