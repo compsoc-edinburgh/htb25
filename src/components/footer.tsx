@@ -83,6 +83,13 @@ export default function Footer() {
       </footer>
       <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-[10px] text-gray-400">
         <a
+          href="/documents/HTB-Code-of-Conduct.pdf"
+          className="hover:text-gray-300 transition-colors duration-200"
+        >
+          Code of Conduct
+        </a>
+        <span className="hidden sm:inline text-gray-500">•</span>
+        <a
           href="/documents/HTB-Privacy-Policy.pdf"
           className="hover:text-gray-300 transition-colors duration-200"
         >

@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface FAQItem {
   question: string;
@@ -7,6 +8,32 @@ interface FAQItem {
 }
 
 const FAQ_ITEMS: FAQItem[] = [
+  {
+    question: "How do I ask for help during the Hackathon?",
+    answer: (
+      <>
+        The best place to ask for help is on the HackTheBurgh Discord, which you
+        can access via the discord invite sent to your email address as a participant. Please
+        make a ticket through the #get-help channel and we'll be with you as
+        soon as possible.
+        <br />
+        <br />
+        If you need help in-person, our volunteers and organizers are wearing
+        HackTheBurgh t-shirts and hoodies to help you spot us! Organizers have a
+        red HackTheBurgh logo on the back of their hoodies; Volunteers have a
+        green version instead. Please don't hesitate to ask us for help.
+      </>
+    ),
+  },
+  {
+    question: "What is the HackTheBurgh Code of Conduct?",
+    answer: (
+      <>
+        The HackTheBurgh Code of Conduct can be found{" "}
+        <Link href="/documents/HTB-Code-of-Conduct.pdf" className="text-accent-yellow underline">here</Link>.
+      </>
+    ),
+  },
   {
     question: "When do applications close?",
     answer: (
@@ -127,11 +154,13 @@ const FAQ_ITEMS: FAQItem[] = [
     answer: (
       <>
         Contact us at{" "}
-        <a href="mailto:hello@hacktheburgh.com">hello@hacktheburgh.com</a>
+        <Link href="mailto:hello@hacktheburgh.com" className="text-accent-yellow underline">hello@hacktheburgh.com</Link> or
+        you can ask us questions in the #get-help channel in the discord.
       </>
     ),
   },
 ];
+
 const FAQAccordionItem = ({ faq }: { faq: FAQItem }) => {
   return (
     <details className="group w-full max-w-5xl rounded-lg bg-white/5 p-6 shadow-[0_0_30px_rgba(255,255,255,0.05)] backdrop-blur-xl border border-white/10 transition-all duration-300 hover:bg-white/10 hover:border-white/20">

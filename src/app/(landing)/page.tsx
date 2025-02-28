@@ -5,6 +5,8 @@ import { SponsorsComponents } from "~/components/modules/landing/sponsors-sectio
 import { auth } from "@clerk/nextjs/server";
 import { api } from "~/trpc/server";
 import { ApplicationStatusSection } from "~/components/application-status-section";
+import Link from "next/link";
+import { Calendar } from "lucide-react";
 
 export default async function Page() {
   const user = await auth();
@@ -15,6 +17,10 @@ export default async function Page() {
     <main className="w-full max-w-screen-xl space-y-8 px-4 py-20 md:mx-auto">
       <div className="mx-auto flex min-h-[calc(100dvh-32rem)] max-w-screen-lg flex-col items-center justify-center pb-20 text-center lg:min-h-[calc(100dvh-12rem)]">
         <img src="/HTB-logo.png" alt="HTB Logo" className="object-contain" />
+        <button className="bg-accent-yellow text-black px-4 py-2 rounded-md text-xl flex items-center gap-2">
+          <Calendar className="w-5 h-5" strokeWidth={2.5} />
+          <Link href="/documents/HTB-Attendee-Itinerary.pdf">Itinerary</Link>
+        </button>
       </div>
       <div className="relative flex w-full flex-col items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-white shadow-[inset_0_0_20px_rgba(255,255,255,0.05)] backdrop-blur-xl transition-all duration-300">
         <ApplicationStatusSection userId={user?.userId} application={application} />
